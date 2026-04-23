@@ -1,1183 +1,689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kytech Admin - Inokom Assessment Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #080b10;
-  --surface: #0e1219;
-  --surface2: #161c26;
-  --surface3: #1d2535;
-  --border: rgba(255,255,255,.07);
-  --border2: rgba(255,255,255,.13);
-  --text: #e4e2dc;
-  --muted: #5a5f6e;
-  --muted2: #8a909e;
-  --gold: #c9a84c;
-  --gold2: #e8c76a;
-  --gold-dim: rgba(201,168,76,.12);
-  --D: #e05a4b; --D-dim: rgba(224,90,75,.15);
-  --I: #e8913a; --I-dim: rgba(232,145,58,.15);
-  --S: #3aad72; --S-dim: rgba(58,173,114,.15);
-  --C: #4a90d9; --C-dim: rgba(74,144,217,.15);
-  --dep: #a87dd4; --dep-dim: rgba(168,125,212,.15);
-  --anx: #e05a4b; --anx-dim: rgba(224,90,75,.15);
-  --str: #e8913a; --str-dim: rgba(232,145,58,.15);
-  --green: #3aad72; --amber: #e8913a; --red: #e05a4b; --blue: #4a90d9;
-  --r: 10px; --r2: 16px;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Sora', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 13px;
-  line-height: 1.6;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kytech Admin – Inokom Assessment Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #0b0f14;
+      --surface:   #12181f;
+      --border:    #1e2830;
+      --accent:    #00d4aa;
+      --accent2:   #0097ff;
+      --danger:    #ff4d6d;
+      --text:      #e8edf2;
+      --muted:     #5a6a78;
+      --card:      #161d26;
+    }
 
-/* ── LOGIN ── */
-#login {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  background: radial-gradient(ellipse at 30% 20%, rgba(201,168,76,.06) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 80%, rgba(74,144,217,.04) 0%, transparent 60%);
-}
-.login-card {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 20px;
-  padding: 44px 40px;
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 32px 64px rgba(0,0,0,.5);
-}
-.login-eyebrow {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 14px;
-}
-.login-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.login-sub {
-  font-size: 12px;
-  color: var(--muted2);
-  margin-bottom: 30px;
-  line-height: 1.7;
-}
-.field { margin-bottom: 14px; text-align: left; }
-.field label {
-  display: block;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--muted2);
-  margin-bottom: 5px;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-.finput {
-  width: 100%;
-  padding: 10px 14px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  font-family: 'Sora', sans-serif;
-  font-size: 13px;
-  color: var(--text);
-  outline: none;
-  transition: border-color .15s;
-}
-.finput:focus { border-color: var(--gold); }
-.ferr {
-  font-size: 12px;
-  color: var(--red);
-  margin-top: 10px;
-  display: none;
-  padding: 8px 12px;
-  background: var(--D-dim);
-  border-radius: 6px;
-}
-.btn-login {
-  width: 100%;
-  background: var(--gold);
-  color: #080b10;
-  border: none;
-  border-radius: 50px;
-  padding: 13px;
-  font-family: 'Sora', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 16px;
-  transition: background .15s, transform .1s;
-  letter-spacing: .03em;
-}
-.btn-login:hover { background: var(--gold2); }
-.btn-login:active { transform: scale(.98); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── APP ── */
-#app { display: none; min-height: 100vh; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* ── TOPBAR ── */
-.topbar {
-  background: rgba(14,18,25,.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.topbar-brand { display: flex; align-items: center; gap: 14px; }
-.topbar-logo {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.topbar-sep { width: 1px; height: 16px; background: var(--border2); }
-.topbar-title { font-size: 13px; font-weight: 500; color: var(--muted2); }
-.topbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.live-badge { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); margin-right: 4px; }
-.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.3;} }
-.btn-top {
-  background: transparent;
-  border: 1px solid var(--border2);
-  border-radius: 50px;
-  padding: 5px 14px;
-  font-family: 'Sora', sans-serif;
-  font-size: 11px;
-  color: var(--muted2);
-  cursor: pointer;
-  transition: all .15s;
-}
-.btn-top:hover { color: var(--text); border-color: rgba(255,255,255,.22); }
-.btn-top.gold { background: var(--gold); border-color: var(--gold); color: #080b10; font-weight: 600; }
-.btn-top.gold:hover { background: var(--gold2); }
+    /* ── GRID BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,170,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,170,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-/* ── MAIN ── */
-.main { max-width: 1280px; margin: 0 auto; padding: 28px 24px 60px; }
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 36px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11,15,20,.85);
+      backdrop-filter: blur(12px);
+    }
 
-/* ── SESSION BAR ── */
-.session-bar {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 14px 20px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-.session-label { font-size: 11px; color: var(--muted); white-space: nowrap; text-transform: uppercase; letter-spacing: .06em; }
-.session-select {
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-family: 'Sora', sans-serif;
-  font-size: 12px;
-  color: var(--text);
-  outline: none;
-  cursor: pointer;
-}
-.auto-note { font-size: 11px; color: var(--muted); margin-left: auto; }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-/* ── STAT GRID ── */
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin-bottom: 24px;
-}
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 18px 16px;
-  position: relative;
-  overflow: hidden;
-  transition: border-color .2s;
-}
-.stat-card:hover { border-color: var(--border2); }
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--accent-color, var(--gold));
-  opacity: .5;
-}
-.stat-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  margin-bottom: 10px;
-}
-.stat-value {
-  font-family: 'Playfair Display', serif;
-  font-size: 34px;
-  font-weight: 600;
-  line-height: 1;
-  margin-bottom: 5px;
-}
-.stat-sub { font-size: 11px; color: var(--muted); }
+    .logo-dot {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
 
-/* ── SECTION TITLE ── */
-.section-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-.section-head-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.section-head-line { flex: 1; height: 1px; background: var(--border); }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.5; transform:scale(.7); }
+    }
 
-/* ── CARDS & GRIDS ── */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 20px;
-}
-.card-title {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  margin-bottom: 16px;
-}
-.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
-.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
+    .header-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
 
-/* ── BAR ROWS ── */
-.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.bar-label { font-size: 12px; color: var(--text); min-width: 130px; }
-.bar-track { flex: 1; height: 6px; background: var(--surface3); border-radius: 3px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 3px; transition: width 1.1s cubic-bezier(.4,0,.2,1); width: 0; }
-.bar-val { font-size: 12px; font-weight: 500; min-width: 36px; text-align: right; font-family: 'DM Mono', monospace; }
+    /* ── LOGIN SCREEN ── */
+    #loginScreen {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 61px);
+      padding: 40px 20px;
+    }
 
-/* ── SEV BARS ── */
-.sev-row { margin-bottom: 16px; }
-.sev-label { font-size: 12px; font-weight: 500; margin-bottom: 6px; }
-.sev-track { height: 20px; border-radius: 6px; overflow: hidden; display: flex; background: var(--surface3); }
-.sev-seg { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #fff; transition: width 1.1s ease; overflow: hidden; white-space: nowrap; }
-.sev-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-.sev-dot { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--muted2); }
-.sev-dot-circle { width: 7px; height: 7px; border-radius: 50%; }
+    .login-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 40px 80px rgba(0,0,0,.5);
+      animation: fadeUp .5s ease both;
+    }
 
-/* ── DISC GRID ── */
-.disc-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
-.disc-col {
-  text-align: center;
-  background: var(--surface2);
-  border-radius: 8px;
-  padding: 14px 8px;
-  border: 1px solid var(--border);
-}
-.disc-letter { font-size: 26px; font-weight: 700; margin-bottom: 4px; font-family: 'Playfair Display', serif; }
-.disc-count { font-size: 22px; font-weight: 300; margin-bottom: 2px; font-family: 'Playfair Display', serif; }
-.disc-name { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-.disc-pct { font-size: 12px; font-weight: 600; margin-top: 5px; font-family: 'DM Mono', monospace; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
 
-/* ── LRI CATS ── */
-.lri-cat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 16px; }
-.lri-cat {
-  background: var(--surface2);
-  border-radius: 8px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid var(--border);
-}
-.lri-cat-label { font-size: 11px; color: var(--muted2); }
-.lri-cat-count { font-size: 22px; font-weight: 300; font-family: 'Playfair Display', serif; }
+    .login-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
 
-/* ── CANVAS CHARTS ── */
-.chart-wrap { position: relative; width: 100%; }
-canvas { display: block; width: 100% !important; }
-.chart-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; }
-.leg-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted2); }
-.leg-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+    .login-sub {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-bottom: 36px;
+    }
 
-/* ── TABLE ── */
-.table-wrap { overflow-x: auto; border-radius: var(--r); border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-thead tr { background: rgba(255,255,255,.03); }
-th {
-  padding: 10px 14px;
-  text-align: left;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-  border-bottom: 1px solid var(--border);
-}
-td { padding: 9px 14px; border-top: 1px solid var(--border); }
-tr:hover td { background: rgba(255,255,255,.02); }
-.badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 4px;
-  letter-spacing: .04em;
-  font-family: 'DM Mono', monospace;
-}
-.tfoot-note { padding: 10px 14px; font-size: 10px; color: var(--muted); border-top: 1px solid var(--border); }
+    label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
 
-/* ── GAP BOX ── */
-.gap-box {
-  background: linear-gradient(135deg, #080b10, #0e1219);
-  border: 1px solid rgba(201,168,76,.2);
-  border-radius: var(--r2);
-  padding: 24px;
-  margin-bottom: 24px;
-}
-.gap-title {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--gold2);
-  margin-bottom: 14px;
-}
-.gap-item { display: flex; gap: 12px; margin-bottom: 12px; }
-.gap-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 7px; }
-.gap-text { font-size: 12px; color: rgba(255,255,255,.6); line-height: 1.75; }
+    input[type="password"] {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 16px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .2s;
+      margin-bottom: 16px;
+    }
 
-/* ── RECOMMENDATION PANEL ── */
-.rec-panel {
-  background: linear-gradient(145deg, #0c1018, #141c28);
-  border: 1px solid rgba(201,168,76,.18);
-  border-radius: var(--r2);
-  padding: 28px;
-  margin-bottom: 24px;
-}
-.rec-panel-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  color: var(--gold2);
-  margin-bottom: 4px;
-}
-.rec-panel-sub { font-size: 11px; color: var(--muted2); margin-bottom: 24px; }
-.rec-block { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.06); }
-.rec-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-.rec-block-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 8px;
-}
-.rec-block-text { font-size: 12px; color: rgba(255,255,255,.65); line-height: 1.85; }
-.rec-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.rec-pill {
-  font-size: 10px;
-  padding: 3px 11px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,.1);
-  color: rgba(255,255,255,.5);
-}
-.rec-pill.urgent { border-color: rgba(224,90,75,.4); color: #e05a4b; }
-.rec-pill.good { border-color: rgba(58,173,114,.4); color: #3aad72; }
-.rec-pill.amber { border-color: rgba(232,145,58,.4); color: #e8913a; }
+    input[type="password"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,212,170,.08);
+    }
 
-/* ── TIMELINE ── */
-.timeline { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); gap: 10px; margin-top: 16px; }
-.tl-card {
-  background: rgba(255,255,255,.03);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 14px;
-}
-.tl-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-}
-.tl-text { font-size: 11px; color: rgba(255,255,255,.5); line-height: 1.6; }
+    .error-msg {
+      display: none;
+      color: var(--danger);
+      font-size: .82rem;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      background: rgba(255,77,109,.08);
+      border: 1px solid rgba(255,77,109,.2);
+      border-radius: 6px;
+    }
 
-/* ── EMPTY / NO DATA ── */
-.no-data { text-align: center; padding: 80px 20px; color: var(--muted); }
-.no-data-icon { font-size: 40px; margin-bottom: 14px; }
-.no-data-title { font-size: 18px; font-weight: 500; color: var(--muted2); margin-bottom: 8px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border: none;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
 
-/* ── SPINNER ── */
-.spin { animation: spin .8s linear infinite; display: inline-block; }
-@keyframes spin { to { transform: rotate(360deg); } }
+    .btn-primary {
+      width: 100%;
+      justify-content: center;
+      background: var(--accent);
+      color: #000;
+    }
 
-/* ── RESPONSIVE ── */
-@media(max-width:760px) {
-  .g2, .g3 { grid-template-columns: 1fr; }
-  .disc-grid { grid-template-columns: repeat(2,1fr); }
-  .lri-cat-grid { grid-template-columns: 1fr; }
-  .stat-grid { grid-template-columns: repeat(2,1fr); }
-  .topbar { padding: 12px 16px; }
-  .main { padding: 20px 16px 40px; }
-}
-</style>
+    .btn-primary:hover { background: #00efc0; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,212,170,.25); }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-size: .82rem;
+      padding: 9px 16px;
+    }
+
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-danger {
+      background: rgba(255,77,109,.1);
+      color: var(--danger);
+      border: 1px solid rgba(255,77,109,.2);
+      font-size: .82rem;
+      padding: 9px 16px;
+    }
+
+    .btn-danger:hover { background: rgba(255,77,109,.2); }
+
+    /* ── DASHBOARD ── */
+    #dashboard {
+      display: none;
+      position: relative;
+      z-index: 5;
+      padding: 32px 36px;
+      max-width: 1400px;
+      margin: 0 auto;
+      animation: fadeUp .4s ease both;
+    }
+
+    .dash-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .dash-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .dash-subtitle {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-top: 4px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .dash-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ── STAT CARDS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+
+    .stat-label {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* ── FILTERS ── */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    select {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 14px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    select:focus { border-color: var(--accent); }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .table-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: .95rem;
+    }
+
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .75rem;
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .live-dot {
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .results-table th {
+      background: var(--surface);
+      padding: 12px 18px;
+      text-align: left;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .results-table td {
+      padding: 13px 18px;
+      font-size: .875rem;
+      border-bottom: 1px solid rgba(30,40,48,.6);
+      vertical-align: middle;
+    }
+
+    .results-table tr:last-child td { border-bottom: none; }
+
+    .results-table tr:hover td { background: rgba(0,212,170,.03); }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .72rem;
+      font-weight: 500;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .badge-dept {
+      background: rgba(0,151,255,.1);
+      color: var(--accent2);
+      border: 1px solid rgba(0,151,255,.2);
+    }
+
+    .mono { font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--muted); }
+
+    /* ── EMPTY / LOADING ── */
+    .state-box {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .state-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .state-msg  { font-size: .9rem; }
+
+    /* ── REFRESH TIMER ── */
+    #timerBar {
+      height: 2px;
+      background: var(--accent);
+      width: 100%;
+      border-radius: 0;
+      transform-origin: left;
+      transition: transform 30s linear;
+      transform: scaleX(0);
+    }
+
+    .timer-wrap {
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    /* ── SESSION SELECT ── */
+    .session-label {
+      font-size: .78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+  </style>
 </head>
 <body>
 
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Kytech Scientific
+  </div>
+  <span class="header-badge">Inokom Assessment · Admin</span>
+</header>
+
 <!-- LOGIN -->
-<div id="login">
+<div id="loginScreen">
   <div class="login-card">
-    <div class="login-eyebrow">Kytech Scientific Sdn Bhd</div>
-    <h2 class="login-title">Admin Dashboard</h2>
-    <p class="login-sub">Live results from the Inokom organisational assessment. Enter your admin password to continue.</p>
-    <!-- Hidden fields pre-filled -->
-    <div class="field" style="display:none">
-      <input class="finput" id="cfg-bin" value="69e9c9abaaba8821972b48a6">
-    </div>
-    <div class="field" style="display:none">
-      <input class="finput" id="cfg-key" value="$2a$10$EhpB.EcVYfFDFDRdEd/mOeJueFTnKkh5RyfoF0rJnaMCqW6FzuURu">
-    </div>
-    <div class="field">
-      <label>Admin Password</label>
-      <input class="finput" id="cfg-pass" type="password" placeholder="Enter password">
-    </div>
-    <div class="ferr" id="login-err">Incorrect password. Please try again.</div>
-    <button class="btn-login" onclick="doLogin()">Access Dashboard</button>
-    <p style="font-size:10px;color:var(--muted);margin-top:16px;line-height:1.7">Secured. Results flow directly from <a href="https://jolenemei2.github.io/inokomea.github.io/" style="color:var(--gold);text-decoration:none" target="_blank">jolenemei2.github.io</a> to this dashboard via JSONBin.</p>
+    <div class="login-title">Admin Access</div>
+    <div class="login-sub">Enter your password to view live assessment results.</div>
+
+    <label for="passwordInput">Admin Password</label>
+    <input type="password" id="passwordInput" placeholder="••••••••••" onkeydown="if(event.key==='Enter') checkPassword()" />
+    <div class="error-msg" id="errorMsg">⚠ Incorrect password. Please try again.</div>
+    <button class="btn btn-primary" onclick="checkPassword()">Access Dashboard →</button>
   </div>
 </div>
 
-<!-- APP -->
-<div id="app">
-  <div class="topbar">
-    <div class="topbar-brand">
-      <div class="topbar-logo">Kytech Scientific</div>
-      <div class="topbar-sep"></div>
-      <div class="topbar-title">Inokom Assessment Dashboard</div>
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+  <div class="dash-header">
+    <div>
+      <div class="dash-title">Live Results</div>
+      <div class="dash-subtitle" id="lastRefresh">Fetching from JSONBin…</div>
     </div>
-    <div class="topbar-actions">
-      <div class="live-badge"><div class="live-dot"></div><span id="last-refresh">-</span></div>
-      <button class="btn-top" id="refresh-btn" onclick="loadData()">Refresh</button>
-      <button class="btn-top gold" onclick="exportCSV()">Export CSV</button>
-      <button class="btn-top" onclick="clearSession()">Clear Session</button>
-      <button class="btn-top" onclick="logout()">Logout</button>
+    <div class="dash-actions">
+      <button class="btn btn-secondary" onclick="loadResults()">↻ Refresh</button>
+      <button class="btn btn-secondary" onclick="exportCSV()">↓ Export CSV</button>
+      <button class="btn btn-danger" onclick="logout()">Logout</button>
     </div>
   </div>
 
-  <div class="main">
-    <div class="session-bar">
-      <span class="session-label">Session</span>
-      <select class="session-select" id="session-filter" onchange="renderAll()">
-        <option value="ALL">All Sessions</option>
-      </select>
-      <span class="auto-note">Auto-refreshes every 30 s</span>
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Submissions</div>
+      <div class="stat-value" id="statTotal">–</div>
     </div>
-    <div id="dashboard-content">
-      <div class="no-data"><div class="no-data-icon">📊</div><div class="no-data-title">Loading results...</div></div>
+    <div class="stat-card">
+      <div class="stat-label">Departments</div>
+      <div class="stat-value" id="statDepts">–</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Latest Entry</div>
+      <div class="stat-value" style="font-size:1.1rem;padding-top:6px" id="statLatest">–</div>
     </div>
   </div>
+
+  <!-- FILTER -->
+  <div class="filter-row">
+    <span class="session-label">Filter by Department:</span>
+    <select id="deptFilter" onchange="applyFilter()">
+      <option value="all">All Departments</option>
+    </select>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-header-bar">
+      <span class="table-title">Submissions</span>
+      <span class="live-indicator"><span class="live-dot"></span> Auto-refreshes every 30s</span>
+    </div>
+    <div class="timer-wrap"><div id="timerBar"></div></div>
+    <div id="tableContainer">
+      <div class="state-box">
+        <div class="state-icon">⏳</div>
+        <div class="state-msg">Loading results from JSONBin…</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-// ════════════════════════════════════════
-// CONFIG - matches index.html exactly
-// ════════════════════════════════════════
-const ADMIN_PASSWORD = 'Kytech2026';
+  // ─────────────────────────────────────────────
+  //  CONFIG — update these values as needed
+  // ─────────────────────────────────────────────
+  const API_KEY   = "$2a$10$DvOUZASCiyYzftTBY7a.Mu5yK3t7KCdWPO7qem9dCPbXnGzd9xnl2";
+  const BIN_ID    = "69ea2206aaba8821972d0cfd";
+  const PASSWORD  = "kytech2024";   // ← change this to your desired admin password
+  // ─────────────────────────────────────────────
 
-let BIN_ID = '', API_KEY = '', allData = [], autoTimer = null;
+  let allResults = [];
+  let isLoggedIn = false;
+  let timerInterval = null;
 
-const SEV_COLORS = {
-  Normal: '#3aad72', Mild: '#e8913a',
-  Moderate: '#e05a4b', Severe: '#c0392b', 'Extremely Severe': '#8e1010'
-};
-const DISC_COLORS = { D: '#e05a4b', I: '#e8913a', S: '#3aad72', C: '#4a90d9' };
-const DISC_NAMES  = { D: 'Driver', I: 'Influencer', S: 'Supporter', C: 'Analyst' };
-const LRI_DIMS = ['self-awareness','initiative','communication','resilience','influence','accountability','growth-mindset','team-development'];
-const LRI_LABELS = {
-  'self-awareness': 'Self-Awareness',
-  'initiative': 'Initiative',
-  'communication': 'Communication',
-  'resilience': 'Resilience',
-  'influence': 'Influence',
-  'accountability': 'Accountability',
-  'growth-mindset': 'Growth Mindset',
-  'team-development': 'Dev. Others'
-};
-const LRI_CAT_COLORS = {
-  'High Potential Leader': '#3aad72',
-  'Emerging Leader': '#e8913a',
-  'Developing Potential': '#4a90d9',
-  'Foundation Building': '#5a5f6e'
-};
-const SEV_ORDER = ['Normal','Mild','Moderate','Severe','Extremely Severe'];
-
-// ════════════════════════════════════════
-// AUTH
-// ════════════════════════════════════════
-function doLogin() {
-  const bin  = document.getElementById('cfg-bin').value.trim();
-  const key  = document.getElementById('cfg-key').value.trim();
-  const pass = document.getElementById('cfg-pass').value.trim();
-  const err  = document.getElementById('login-err');
-  if (pass !== ADMIN_PASSWORD) { err.style.display='block'; return; }
-  if (!bin || !key) { err.style.display='block'; err.textContent='BIN ID / API Key missing.'; return; }
-  err.style.display = 'none';
-  BIN_ID = bin; API_KEY = key;
-  document.getElementById('login').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  loadData();
-  autoTimer = setInterval(loadData, 30000);
-}
-
-function logout() {
-  clearInterval(autoTimer);
-  BIN_ID = ''; API_KEY = ''; allData = [];
-  document.getElementById('login').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-}
-
-// ════════════════════════════════════════
-// DATA FETCH
-// ════════════════════════════════════════
-async function loadData() {
-  const btn = document.getElementById('refresh-btn');
-  btn.innerHTML = '<span class="spin">&#8635;</span> Loading';
-  btn.disabled = true;
-  try {
-    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-      headers: { 'X-Master-Key': API_KEY }
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const json = await res.json();
-    allData = (json.record && json.record.participants) || [];
-
-    // Populate session filter
-    const sessions = [...new Set(allData.map(p => p.session || 'Unknown'))];
-    const sel = document.getElementById('session-filter');
-    const cur = sel.value;
-    sel.innerHTML = '<option value="ALL">All Sessions</option>' +
-      sessions.map(s => `<option value="${s}" ${s===cur?'selected':''}>${s}</option>`).join('');
-
-    renderAll();
-    document.getElementById('last-refresh').textContent = 'Updated ' + new Date().toLocaleTimeString();
-  } catch(e) {
-    document.getElementById('last-refresh').textContent = 'Error: ' + e.message;
-  }
-  btn.innerHTML = 'Refresh'; btn.disabled = false;
-}
-
-function getFiltered() {
-  const sess = document.getElementById('session-filter').value;
-  return sess === 'ALL' ? allData : allData.filter(p => (p.session||'Unknown') === sess);
-}
-
-async function clearSession() {
-  const sess = document.getElementById('session-filter').value;
-  if (sess === 'ALL') { alert('Select a specific session to clear.'); return; }
-  if (!confirm(`Delete ALL ${getFiltered().length} results for "${sess}"? Cannot be undone.`)) return;
-  const remaining = allData.filter(p => (p.session||'Unknown') !== sess);
-  try {
-    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-      body: JSON.stringify({ participants: remaining })
-    });
-    allData = remaining; renderAll();
-  } catch(e) { alert('Failed to clear: ' + e.message); }
-}
-
-// ════════════════════════════════════════
-// RENDER
-// ════════════════════════════════════════
-function renderAll() {
-  const data = getFiltered();
-  const n = data.length;
-  const content = document.getElementById('dashboard-content');
-
-  if (n === 0) {
-    content.innerHTML = `<div class="no-data">
-      <div class="no-data-icon">📋</div>
-      <div class="no-data-title">No participants yet</div>
-      <p style="font-size:12px;color:var(--muted);margin-top:6px">Results will appear here as participants complete the assessment at<br>
-      <a href="https://jolenemei2.github.io/inokomea.github.io/" target="_blank" style="color:var(--gold)">jolenemei2.github.io/inokomea.github.io</a></p>
-    </div>`;
-    return;
-  }
-
-  // ── Aggregations ──────────────────────
-  const avg = arr => +(arr.reduce((s,v)=>s+v,0)/arr.length).toFixed(1);
-  const avgDep = avg(data.map(p=>p.dep));
-  const avgAnx = avg(data.map(p=>p.anx));
-  const avgStr = avg(data.map(p=>p.str));
-  const avgLri = Math.round(data.reduce((s,p)=>s+p.lriPercent,0)/n);
-
-  const discCount = {D:0,I:0,S:0,C:0};
-  data.forEach(p => { discCount[p.disc] = (discCount[p.disc]||0)+1; });
-  const topDisc = Object.entries(discCount).sort((a,b)=>b[1]-a[1])[0];
-
-  const sevCount = {dep:{},anx:{},str:{}};
-  data.forEach(p => {
-    sevCount.dep[p.depLabel] = (sevCount.dep[p.depLabel]||0)+1;
-    sevCount.anx[p.anxLabel] = (sevCount.anx[p.anxLabel]||0)+1;
-    sevCount.str[p.strLabel] = (sevCount.str[p.strLabel]||0)+1;
-  });
-
-  const lriCats = {'High Potential Leader':0,'Emerging Leader':0,'Developing Potential':0,'Foundation Building':0};
-  data.forEach(p => { if (lriCats[p.lriLabel] !== undefined) lriCats[p.lriLabel]++; });
-
-  const avgLriDims = {};
-  LRI_DIMS.forEach(k => { avgLriDims[k] = avg(data.map(p => (p.lriDimensions&&p.lriDimensions[k])||0)); });
-
-  const depts = {};
-  data.forEach(p => { depts[p.dept] = (depts[p.dept]||0)+1; });
-
-  const deptMap = {};
-  data.forEach(p => {
-    if (!deptMap[p.dept]) deptMap[p.dept] = {D:0,I:0,S:0,C:0,dep:[],anx:[],str:[],lri:[]};
-    deptMap[p.dept][p.disc]++;
-    deptMap[p.dept].dep.push(p.dep);
-    deptMap[p.dept].anx.push(p.anx);
-    deptMap[p.dept].str.push(p.str);
-    deptMap[p.dept].lri.push(p.lriPercent);
-  });
-
-  const highPot   = data.filter(p=>p.lriPercent>=70).length;
-  const lowLri    = data.filter(p=>p.lriPercent<50).length;
-  const hasConcern = data.filter(p=>['Moderate','Severe','Extremely Severe'].includes(p.depLabel)||
-                                     ['Moderate','Severe','Extremely Severe'].includes(p.anxLabel)||
-                                     ['Moderate','Severe','Extremely Severe'].includes(p.strLabel)).length;
-
-  // ── Gap items ──────────────────────────
-  const gaps = [];
-  if (avgDep>9)  gaps.push(`Elevated depression average (${avgDep}/42) - suggests motivation, engagement and purpose gaps affecting team performance.`);
-  if (avgAnx>7)  gaps.push(`Anxiety above normal range (${avgAnx}/42) - likely reducing communication confidence and willingness to take initiative.`);
-  if (avgStr>14) gaps.push(`Stress above normal range (${avgStr}/42) - points to workload pressure, role ambiguity, or lack of perceived support.`);
-  if (lowLri>0)  gaps.push(`${lowLri} participant${lowLri>1?'s':''} in Foundation Building stage (LRI <50%) - require foundational development before promotion consideration.`);
-  if (highPot>0) gaps.push(`${highPot} participant${highPot>1?'s':''} scored High Potential or Emerging Leader (LRI 70%+) - ready for fast-track development.`);
-  if (topDisc[1]/n>0.5) gaps.push(`${Math.round(topDisc[1]/n*100)}% of the group share the ${topDisc[0]} (${DISC_NAMES[topDisc[0]]}) style - concentrated style creates team blind spots addressable through DISC training.`);
-  if (hasConcern>0) gaps.push(`${hasConcern} participant${hasConcern>1?'s have':' has'} at least one DASS-21 subscale at Moderate or above - confidential psychologist follow-up recommended.`);
-
-  // ── Build HTML ─────────────────────────
-  const sc = (v,n2,m) => v<=n2?'var(--green)':v<=m?'var(--amber)':'var(--red)';
-  let h = '';
-
-  // Stat cards
-  h += `<div class="stat-grid">
-    ${sc2('Participants', n, 'total responses', 'var(--gold)', 'var(--gold)')}
-    ${sc2('Avg Depression', avgDep, '/42 - '+getLabel(avgDep,'D'), sc(avgDep,9,13), sc(avgDep,9,13))}
-    ${sc2('Avg Anxiety', avgAnx, '/42 - '+getLabel(avgAnx,'A'), sc(avgAnx,7,9), sc(avgAnx,7,9))}
-    ${sc2('Avg Stress', avgStr, '/42 - '+getLabel(avgStr,'S'), sc(avgStr,14,18), sc(avgStr,14,18))}
-    ${sc2('Avg LRI', avgLri+'%', 'leadership readiness', avgLri>=70?'var(--green)':avgLri>=50?'var(--amber)':'var(--blue)', avgLri>=70?'var(--green)':avgLri>=50?'var(--amber)':'var(--blue)')}
-    ${sc2('High Potential', highPot, 'LRI 70%+', 'var(--green)', 'var(--green)')}
-    ${sc2('Need Support', hasConcern, 'DASS moderate+', 'var(--red)', 'var(--red)')}
-    ${sc2('Foundation Stage', lowLri, 'LRI below 50%', 'var(--amber)', 'var(--amber)')}
-  </div>`;
-
-  // Gap box
-  if (gaps.length) {
-    h += `<div class="gap-box">
-      <div class="gap-title">Key Gaps Identified - Present to HR Director</div>
-      ${gaps.map(g=>`<div class="gap-item"><div class="gap-dot"></div><div class="gap-text">${g}</div></div>`).join('')}
-      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06);font-size:10px;color:rgba(255,255,255,.25)">Auto-generated from live data. For L&D planning only. Session: ${document.getElementById('session-filter').value}</div>
-    </div>`;
-  }
-
-  // ── DASS section ──
-  h += sectionHead('Emotional Wellbeing (DASS-21)');
-  h += `<div class="g2">`;
-
-  // Severity bars
-  h += `<div class="card"><div class="card-title">Severity Distribution by Subscale</div>`;
-  ['dep','anx','str'].forEach((k,i) => {
-    const label = ['Depression','Anxiety','Stress'][i];
-    const counts = sevCount[k];
-    const total = Object.values(counts).reduce((s,v)=>s+v,0)||1;
-    const segs = SEV_ORDER.filter(s=>counts[s]).map(s => {
-      const pct = (counts[s]/total*100).toFixed(1);
-      return `<div class="sev-seg" style="width:${pct}%;background:${SEV_COLORS[s]}" title="${s}: ${counts[s]}">${counts[s]>1?counts[s]:''}</div>`;
-    }).join('');
-    const legend = SEV_ORDER.filter(s=>counts[s]).map(s =>
-      `<div class="sev-dot"><div class="sev-dot-circle" style="background:${SEV_COLORS[s]}"></div>${s} (${counts[s]})</div>`
-    ).join('');
-    h += `<div class="sev-row"><div class="sev-label">${label}</div><div class="sev-track">${segs}</div><div class="sev-legend">${legend}</div></div>`;
-  });
-  h += `</div>`;
-
-  // DASS canvas chart
-  h += `<div class="card"><div class="card-title">Group Averages vs Normal Thresholds</div>
-    <div class="chart-wrap"><canvas id="c-dass" height="170"></canvas></div>
-    <div class="chart-legend">
-      <div class="leg-item"><div class="leg-dot" style="background:var(--dep)"></div>Depression (safe: 0-9)</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--anx)"></div>Anxiety (safe: 0-7)</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--str)"></div>Stress (safe: 0-14)</div>
-    </div>
-  </div>`;
-  h += `</div>`; // g2
-
-  // ── DISC + LRI section ──
-  h += sectionHead('DISC Behavioural Profile & Leadership Readiness');
-  h += `<div class="g2">`;
-
-  // DISC donut
-  h += `<div class="card"><div class="card-title">DISC Style Distribution</div>
-    <div class="chart-wrap"><canvas id="c-disc" height="210"></canvas></div>
-    <div class="chart-legend">
-      ${['D','I','S','C'].map(t=>`<div class="leg-item"><div class="leg-dot" style="background:${DISC_COLORS[t]}"></div>${t}: ${DISC_NAMES[t]} (${discCount[t]||0})</div>`).join('')}
-    </div>
-  </div>`;
-
-  // LRI breakdown
-  h += `<div class="card"><div class="card-title">Leadership Readiness Categories</div>
-    <div class="lri-cat-grid">`;
-  Object.entries(lriCats).forEach(([cat,cnt]) => {
-    h += `<div class="lri-cat">
-      <div><div class="lri-cat-label">${cat}</div>
-      <div style="font-size:10px;color:${LRI_CAT_COLORS[cat]};margin-top:2px">${n>0?Math.round(cnt/n*100):0}%</div></div>
-      <div class="lri-cat-count" style="color:${LRI_CAT_COLORS[cat]}">${cnt}</div>
-    </div>`;
-  });
-  h += `</div><div class="card-title" style="margin-top:18px">Avg Score per Dimension (out of 4)</div>`;
-  const dimC = ['#a87dd4','#e05a4b','#e8913a','#3aad72','#4a90d9','#c84b3b','#e8913a','#3aad72'];
-  LRI_DIMS.forEach((k,i) => {
-    const v = avgLriDims[k];
-    h += `<div class="bar-row">
-      <div class="bar-label">${LRI_LABELS[k]}</div>
-      <div class="bar-track"><div class="bar-fill" style="background:${dimC[i]}" data-w="${v/4*100}"></div></div>
-      <div class="bar-val" style="color:${dimC[i]}">${v}</div>
-    </div>`;
-  });
-  h += `</div>`;
-  h += `</div>`; // g2
-
-  // ── DISC bars full-width + Radar + Scatter ──
-  h += sectionHead('Visual Analysis');
-  h += `<div class="g3">`;
-
-  // DISC bar chart
-  h += `<div class="card"><div class="card-title">DISC Counts</div>`;
-  ['D','I','S','C'].forEach(t => {
-    h += `<div class="bar-row">
-      <div class="bar-label" style="color:${DISC_COLORS[t]};font-weight:600">${t} - ${DISC_NAMES[t]}</div>
-      <div class="bar-track"><div class="bar-fill" style="background:${DISC_COLORS[t]}" data-w="${n>0?(discCount[t]||0)/n*100:0}"></div></div>
-      <div class="bar-val" style="color:${DISC_COLORS[t]}">${discCount[t]||0}</div>
-    </div>`;
-  });
-  h += `</div>`;
-
-  // Radar
-  h += `<div class="card"><div class="card-title">Leadership Radar (Group Avg)</div>
-    <div class="chart-wrap"><canvas id="c-radar" height="220"></canvas></div>
-  </div>`;
-
-  // Scatter
-  h += `<div class="card"><div class="card-title">Wellbeing vs Leadership (per person)</div>
-    <div class="chart-wrap"><canvas id="c-scatter" height="220"></canvas></div>
-    <div style="font-size:10px;color:var(--muted);margin-top:6px">X = LRI %. Y = total DASS. Colour = DISC type.</div>
-  </div>`;
-
-  h += `</div>`; // g3
-
-  // ── Department breakdown ──
-  if (Object.keys(depts).length > 1) {
-    h += sectionHead('By Department');
-    h += `<div class="card" style="margin-bottom:24px"><div class="card-title">Participants, Avg Wellbeing & Top DISC per Department</div>`;
-    Object.entries(depts).sort((a,b)=>b[1]-a[1]).forEach(([dept,cnt]) => {
-      const di = deptMap[dept];
-      const aD = di.dep.length ? Math.round(di.dep.reduce((a,b)=>a+b,0)/di.dep.length) : '?';
-      const aA = di.anx.length ? Math.round(di.anx.reduce((a,b)=>a+b,0)/di.anx.length) : '?';
-      const aS = di.str.length ? Math.round(di.str.reduce((a,b)=>a+b,0)/di.str.length) : '?';
-      const aL = di.lri.length ? Math.round(di.lri.reduce((a,b)=>a+b,0)/di.lri.length) : '?';
-      const td = Object.entries({D:di.D,I:di.I,S:di.S,C:di.C}).sort((a,b)=>b[1]-a[1])[0];
-      h += `<div class="bar-row">
-        <div class="bar-label">${dept} <span style="color:var(--muted)">(${cnt})</span></div>
-        <div class="bar-track"><div class="bar-fill" style="background:var(--gold)" data-w="${cnt/n*100}"></div></div>
-        <div style="font-size:10px;color:var(--muted2);white-space:nowrap;margin-left:8px;font-family:'DM Mono',monospace">
-          D:${aD} A:${aA} S:${aS} LRI:${aL}% | <span style="color:${DISC_COLORS[td[0]]};font-weight:700">${td[0]}</span>
-        </div>
-      </div>`;
-    });
-    h += `</div>`;
-  }
-
-  // ── Recommendation panel ──
-  h += buildRec(data,n,avgDep,avgAnx,avgStr,avgLri,discCount,avgLriDims,lriCats,highPot,lowLri,hasConcern,topDisc);
-
-  // ── Individual table ──
-  h += sectionHead('Individual Participant Results');
-  h += `<div class="table-wrap" style="margin-bottom:24px"><table>
-    <thead><tr>
-      <th>#</th><th>Name</th><th>Dept</th><th>Role</th><th>Tenure</th>
-      <th>Dep</th><th>Anx</th><th>Str</th>
-      <th>Dep Level</th><th>Anx Level</th><th>Str Level</th>
-      <th>DISC</th><th>LRI%</th><th>Category</th><th>Time</th>
-    </tr></thead><tbody>`;
-  data.slice().sort((a,b)=>new Date(a.timestamp)-new Date(b.timestamp)).forEach((p,i) => {
-    const sb = label => `<span class="badge" style="background:${SEV_COLORS[label]}22;color:${SEV_COLORS[label]}">${label}</span>`;
-    const t  = p.timestamp ? new Date(p.timestamp).toLocaleTimeString('en-MY',{hour:'2-digit',minute:'2-digit'}) : '-';
-    const lc = p.lriPercent>=70?'var(--green)':p.lriPercent>=50?'var(--amber)':'var(--blue)';
-    h += `<tr>
-      <td style="color:var(--muted)">${i+1}</td>
-      <td style="font-weight:500">${p.name}</td>
-      <td style="color:var(--muted2)">${p.dept}</td>
-      <td style="color:var(--muted2)">${p.role||'-'}</td>
-      <td style="color:var(--muted2)">${p.years||'-'}</td>
-      <td style="font-weight:600;color:${SEV_COLORS[p.depLabel]};font-family:'DM Mono',monospace">${p.dep}</td>
-      <td style="font-weight:600;color:${SEV_COLORS[p.anxLabel]};font-family:'DM Mono',monospace">${p.anx}</td>
-      <td style="font-weight:600;color:${SEV_COLORS[p.strLabel]};font-family:'DM Mono',monospace">${p.str}</td>
-      <td>${sb(p.depLabel)}</td><td>${sb(p.anxLabel)}</td><td>${sb(p.strLabel)}</td>
-      <td><span class="badge" style="background:${DISC_COLORS[p.disc]}22;color:${DISC_COLORS[p.disc]}">${p.disc}</span></td>
-      <td style="font-weight:600;color:${lc};font-family:'DM Mono',monospace">${p.lriPercent}%</td>
-      <td style="font-size:11px;color:${LRI_CAT_COLORS[p.lriLabel]}">${p.lriLabel}</td>
-      <td style="color:var(--muted);font-family:'DM Mono',monospace">${t}</td>
-    </tr>`;
-  });
-  h += `</tbody></table>
-    <div class="tfoot-note">DASS-21 scores 0-42. Normal thresholds: Depression 0-9 | Anxiety 0-7 | Stress 0-14.</div>
-  </div>`;
-
-  content.innerHTML = h;
-
-  // Animate bars then draw charts
-  setTimeout(() => {
-    document.querySelectorAll('.bar-fill[data-w]').forEach(el => { el.style.width = el.dataset.w + '%'; });
-    drawDass(avgDep, avgAnx, avgStr);
-    drawDisc(discCount, n);
-    drawRadar(avgLriDims);
-    drawScatter(data);
-  }, 80);
-}
-
-// ════════════════════════════════════════
-// CHARTS
-// ════════════════════════════════════════
-function drawDass(avgDep, avgAnx, avgStr) {
-  const c = document.getElementById('c-dass'); if (!c) return;
-  const W = c.parentElement.offsetWidth; c.width = W; c.height = 170;
-  const ctx = c.getContext('2d');
-  const pad = {l:10,r:10,t:24,b:44};
-  const cH = c.height - pad.t - pad.b;
-  const labels = ['Depression','Anxiety','Stress'];
-  const avgs   = [avgDep, avgAnx, avgStr];
-  const norms  = [9, 7, 14];
-  const colors = ['#a87dd4','#e05a4b','#e8913a'];
-  const bw = Math.floor((W-pad.l-pad.r)/3);
-  const barW = Math.min(bw*.5, 56);
-
-  ctx.clearRect(0,0,W,c.height);
-  labels.forEach((lbl,i) => {
-    const x = pad.l + i*bw + bw/2;
-    // threshold dashed line
-    const ny = pad.t + cH*(1-norms[i]/42);
-    ctx.save(); ctx.setLineDash([3,3]);
-    ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(x-barW-8, ny); ctx.lineTo(x+barW+8, ny); ctx.stroke();
-    ctx.restore();
-    // bar
-    const bH = cH*(avgs[i]/42);
-    const over = avgs[i] > norms[i];
-    ctx.fillStyle = over ? colors[i] + 'cc' : colors[i] + '44';
-    ctx.beginPath(); ctx.roundRect(x-barW/2, pad.t+cH-bH, barW, bH, 4); ctx.fill();
-    // value
-    ctx.fillStyle = colors[i]; ctx.font = 'bold 12px Sora,sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(avgs[i], x, pad.t+cH-bH-7);
-    // label
-    ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.font = '10px Sora,sans-serif';
-    ctx.fillText(lbl, x, c.height-pad.b+14);
-    // threshold label
-    ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.font = '9px Sora,sans-serif';
-    ctx.fillText('max '+norms[i], x, ny-5);
-  });
-}
-
-function drawDisc(discCount, n) {
-  const c = document.getElementById('c-disc'); if (!c) return;
-  const W = Math.min(c.parentElement.offsetWidth, 320); c.width = W; c.height = 210;
-  const ctx = c.getContext('2d');
-  const cx = W/2, cy = 100, r = 82, ir = 50;
-  let a = -Math.PI/2;
-  ctx.clearRect(0,0,W,210);
-  ['D','I','S','C'].forEach(t => {
-    const slice = (discCount[t]||0) / (n||1) * Math.PI*2;
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,a,a+slice); ctx.closePath();
-    ctx.fillStyle = DISC_COLORS[t]; ctx.fill();
-    if (slice > 0.28) {
-      const ma = a + slice/2;
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 13px Playfair Display,serif';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(t, cx+Math.cos(ma)*(r+ir)/2, cy+Math.sin(ma)*(r+ir)/2);
+  // ── LOGIN ──────────────────────────────────────
+  function checkPassword() {
+    const val = document.getElementById("passwordInput").value;
+    if (val === PASSWORD) {
+      isLoggedIn = true;
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      loadResults();
+      startAutoRefresh();
+    } else {
+      document.getElementById("errorMsg").style.display = "block";
     }
-    a += slice;
-  });
-  ctx.beginPath(); ctx.arc(cx,cy,ir,0,Math.PI*2);
-  ctx.fillStyle = '#0e1219'; ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.font = '11px Sora,sans-serif';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('n = '+n, cx, cy);
-}
+  }
 
-function drawRadar(dims) {
-  const c = document.getElementById('c-radar'); if (!c) return;
-  const W = c.parentElement.offsetWidth; c.width = W; c.height = 220;
-  const ctx = c.getContext('2d');
-  const cx = W/2, cy = 112, maxR = 82, N = LRI_DIMS.length;
-  const step = Math.PI*2/N;
-  ctx.clearRect(0,0,W,220);
+  function logout() {
+    isLoggedIn = false;
+    clearInterval(timerInterval);
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("passwordInput").value = "";
+    document.getElementById("errorMsg").style.display = "none";
+  }
 
-  // grid rings
-  [1,2,3,4].forEach(ring => {
-    ctx.beginPath();
-    for (let i=0; i<N; i++) {
-      const a = -Math.PI/2+i*step;
-      const px = cx + Math.cos(a)*maxR*(ring/4);
-      const py = cy + Math.sin(a)*maxR*(ring/4);
-      i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+  // ── LOAD FROM JSONBIN ──────────────────────────
+  async function loadResults() {
+    try {
+      document.getElementById("lastRefresh").textContent = "Refreshing…";
+
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { "X-Master-Key": API_KEY }
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status} – check your API key or Bin ID`);
+
+      const data = await res.json();
+      const raw  = data.record || [];
+
+      // filter out init placeholder
+      allResults = raw.filter(r => r.name && r.name !== "");
+
+      document.getElementById("lastRefresh").textContent =
+        `Last updated: ${new Date().toLocaleTimeString()}`;
+
+      updateStats();
+      populateFilter();
+      applyFilter();
+      resetTimer();
+
+    } catch (err) {
+      console.error("JSONBin error:", err);
+      document.getElementById("tableContainer").innerHTML = `
+        <div class="state-box">
+          <div class="state-icon">❌</div>
+          <div class="state-msg">Failed to load: <strong>${err.message}</strong></div>
+        </div>`;
+      document.getElementById("lastRefresh").textContent = "Error loading data";
     }
-    ctx.closePath();
-    ctx.strokeStyle = ring===4?'rgba(255,255,255,.14)':'rgba(255,255,255,.05)';
-    ctx.lineWidth=1; ctx.stroke();
-  });
-
-  // axes + labels
-  const shortL = ['Self-Aware','Initiative','Comms','Resilience','Influence','Accountab.','Growth','Dev Others'];
-  for (let i=0; i<N; i++) {
-    const a = -Math.PI/2+i*step;
-    ctx.beginPath(); ctx.moveTo(cx,cy);
-    ctx.lineTo(cx+Math.cos(a)*maxR, cy+Math.sin(a)*maxR);
-    ctx.strokeStyle='rgba(255,255,255,.07)'; ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,.4)'; ctx.font='9px Sora,sans-serif';
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(shortL[i], cx+Math.cos(a)*(maxR+16), cy+Math.sin(a)*(maxR+16));
   }
 
-  // data polygon
-  ctx.beginPath();
-  LRI_DIMS.forEach((k,i) => {
-    const val = (dims[k]||0)/4;
-    const a = -Math.PI/2+i*step;
-    const px = cx+Math.cos(a)*maxR*val, py = cy+Math.sin(a)*maxR*val;
-    i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
-  });
-  ctx.closePath();
-  ctx.fillStyle='rgba(201,168,76,.15)'; ctx.fill();
-  ctx.strokeStyle='#c9a84c'; ctx.lineWidth=2; ctx.stroke();
-
-  LRI_DIMS.forEach((k,i) => {
-    const val = (dims[k]||0)/4;
-    const a = -Math.PI/2+i*step;
-    ctx.beginPath();
-    ctx.arc(cx+Math.cos(a)*maxR*val, cy+Math.sin(a)*maxR*val, 3.5, 0, Math.PI*2);
-    ctx.fillStyle='#e8c76a'; ctx.fill();
-  });
-}
-
-function drawScatter(data) {
-  const c = document.getElementById('c-scatter'); if (!c) return;
-  const W = c.parentElement.offsetWidth; c.width = W; c.height = 220;
-  const ctx = c.getContext('2d');
-  const pad = {l:36,r:12,t:12,b:36};
-  const cW = W-pad.l-pad.r, cH = c.height-pad.t-pad.b;
-  ctx.clearRect(0,0,W,c.height);
-
-  // axes
-  ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+cH); ctx.lineTo(pad.l+cW,pad.t+cH); ctx.stroke();
-
-  // grid
-  [0,25,50,75,100].forEach(v => {
-    const x = pad.l+v/100*cW;
-    ctx.strokeStyle='rgba(255,255,255,.04)'; ctx.beginPath(); ctx.moveTo(x,pad.t); ctx.lineTo(x,pad.t+cH); ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,.28)'; ctx.font='9px DM Mono,monospace'; ctx.textAlign='center';
-    ctx.fillText(v+'%', x, pad.t+cH+14);
-  });
-  [0,42,84,126].forEach(v => {
-    const y = pad.t+cH*(1-v/126);
-    ctx.strokeStyle='rgba(255,255,255,.04)'; ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cW,y); ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,.28)'; ctx.font='9px DM Mono,monospace'; ctx.textAlign='right';
-    ctx.fillText(v, pad.l-4, y+3);
-  });
-
-  // axis labels
-  ctx.fillStyle='rgba(255,255,255,.35)'; ctx.font='9px Sora,sans-serif'; ctx.textAlign='center';
-  ctx.fillText('LRI %', pad.l+cW/2, c.height-2);
-  ctx.save(); ctx.translate(10, pad.t+cH/2); ctx.rotate(-Math.PI/2);
-  ctx.fillText('Total DASS', 0, 0); ctx.restore();
-
-  // dots
-  data.forEach(p => {
-    const x = pad.l + (p.lriPercent/100)*cW;
-    const total = Math.min((p.dep||0)+(p.anx||0)+(p.str||0), 126);
-    const y = pad.t + cH*(1-total/126);
-    ctx.beginPath(); ctx.arc(x, y, 5.5, 0, Math.PI*2);
-    ctx.fillStyle = (DISC_COLORS[p.disc]||'#aaa')+'bb'; ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth=1; ctx.stroke();
-  });
-}
-
-// ════════════════════════════════════════
-// RECOMMENDATION ENGINE
-// ════════════════════════════════════════
-function buildRec(data,n,avgDep,avgAnx,avgStr,avgLri,discCount,avgLriDims,lriCats,highPot,lowLri,hasConcern,topDisc) {
-  const weakest  = Object.entries(avgLriDims).sort((a,b)=>a[1]-b[1])[0];
-  const strongest = Object.entries(avgLriDims).sort((a,b)=>b[1]-a[1])[0];
-  const domDisc  = topDisc[0];
-  const domPct   = Math.round(topDisc[1]/n*100);
-  const crisis   = avgDep>13||avgAnx>9||avgStr>18;
-  const mild     = avgDep>9||avgAnx>7||avgStr>14;
-  const ready    = avgLri>=65;
-  const foundation = avgLri<50;
-  const concentrated = domPct>60;
-
-  let r = `<div class="rec-panel">
-    <div class="rec-panel-title">Organisational Development Recommendations</div>
-    <div class="rec-panel-sub">Generated from ${n} participant${n>1?'s':''} - for HR Director and L&D planning.</div>`;
-
-  // Priority 1: Wellbeing
-  r += `<div class="rec-block"><div class="rec-block-label">Priority 1 - Wellbeing Intervention</div>`;
-  if (crisis) {
-    r += `<div class="rec-block-text">Wellbeing scores exceed normal thresholds and require immediate attention. Elevated psychological distress at this level directly reduces cognitive performance, quality of work, and readiness for leadership development. <strong style="color:var(--red)">Do not launch leadership training until wellbeing is addressed.</strong> Actions: (1) Schedule individual psychologist sessions for the ${hasConcern} flagged participant${hasConcern>1?'s':''}. (2) Run a confidential focus group to surface root causes - likely workload, role clarity, or interpersonal tension. (3) Introduce structured recovery: micro-break protocols, shift debrief sessions, manager check-ins.</div>
-    <div class="rec-pills"><span class="rec-pill urgent">Immediate: Psychologist Follow-up</span><span class="rec-pill urgent">Root Cause Investigation</span><span class="rec-pill amber">Defer Leadership Training</span></div>`;
-  } else if (mild) {
-    r += `<div class="rec-block-text">Mild emotional load is present. While not critical, this limits focus, communication confidence, and capacity to absorb leadership development. Actions: (1) Integrate a wellbeing module at the start of training. (2) Train supervisors to recognise early burnout signals. (3) Implement a peer support or buddy system.</div>
-    <div class="rec-pills"><span class="rec-pill amber">Wellbeing Module First</span><span class="rec-pill amber">Supervisor EQ Training</span><span class="rec-pill">Peer Support System</span></div>`;
-  } else {
-    r += `<div class="rec-block-text">Group wellbeing is within normal range - a strong foundation to launch leadership development immediately. Maintain this baseline by embedding regular check-ins and reinforcing psychological safety within the programme.</div>
-    <div class="rec-pills"><span class="rec-pill good">Healthy Baseline</span><span class="rec-pill good">Proceed with Training</span></div>`;
+  // ── STATS ──────────────────────────────────────
+  function updateStats() {
+    document.getElementById("statTotal").textContent = allResults.length;
+    const depts = new Set(allResults.map(r => r.department).filter(Boolean));
+    document.getElementById("statDepts").textContent = depts.size || 0;
+    if (allResults.length) {
+      const last = allResults[allResults.length - 1];
+      document.getElementById("statLatest").textContent =
+        last.name || last.timestamp || "–";
+    } else {
+      document.getElementById("statLatest").textContent = "–";
+    }
   }
-  r += `</div>`;
 
-  // Priority 2: Leadership development
-  r += `<div class="rec-block"><div class="rec-block-label">Priority 2 - Leadership Development Strategy</div>`;
-  if (foundation) {
-    r += `<div class="rec-block-text">Group average LRI of ${avgLri}% places most participants in early development stage. This reflects an absence of structured opportunity, not a lack of potential. A foundational programme is the highest-leverage intervention. Focus on speaking up, taking initiative, communicating with confidence, and owning outcomes. The ${highPot} participant${highPot>1?'s':''} above 70% should serve as peer facilitators to accelerate learning across the group.</div>
-    <div class="rec-pills"><span class="rec-pill amber">Foundational Programme</span><span class="rec-pill">${highPot} Peer Facilitator${highPot>1?'s':''}</span><span class="rec-pill">6-month Plan</span></div>`;
-  } else if (ready) {
-    r += `<div class="rec-block-text">Group average LRI of ${avgLri}% shows strong readiness. Fast-track the ${highPot} high-potential participant${highPot>1?'s':''} into a leadership accelerator while providing targeted skill-building for the ${lowLri} in the foundation stage. Focus the programme on channelling DISC strengths into team leadership, cross-functional influence, and performance coaching.</div>
-    <div class="rec-pills"><span class="rec-pill good">${highPot} Ready for Fast-Track</span><span class="rec-pill amber">${lowLri} Need Foundation First</span><span class="rec-pill good">Leadership Accelerator</span></div>`;
-  } else {
-    r += `<div class="rec-block-text">Group average LRI of ${avgLri}% reflects mixed readiness - typical and manageable with a tiered design. Stream A: ${highPot} high-potential (accelerated skills). Stream B: majority (emerging leader foundations). Stream C: ${lowLri} foundation-stage (core behavioural confidence). All three streams share a DISC communication module to improve cross-team collaboration.</div>
-    <div class="rec-pills"><span class="rec-pill good">Stream A: ${highPot} High-Potential</span><span class="rec-pill amber">Stream B: Emerging</span><span class="rec-pill">Stream C: ${lowLri} Foundation</span></div>`;
+  // ── FILTER ────────────────────────────────────
+  function populateFilter() {
+    const sel   = document.getElementById("deptFilter");
+    const depts = [...new Set(allResults.map(r => r.department).filter(Boolean))].sort();
+    const cur   = sel.value;
+    sel.innerHTML = `<option value="all">All Departments</option>`;
+    depts.forEach(d => {
+      const o = document.createElement("option");
+      o.value = d; o.textContent = d;
+      if (d === cur) o.selected = true;
+      sel.appendChild(o);
+    });
   }
-  r += `</div>`;
 
-  // Priority 3: DISC dynamics
-  r += `<div class="rec-block"><div class="rec-block-label">Priority 3 - Team Dynamics & Communication</div>`;
-  if (concentrated) {
-    const notes = {
-      D: 'A Driver-heavy team moves fast but may underinvest in people development, active listening, and psychological safety.',
-      I: 'An Influencer-heavy team has high morale but may struggle with follow-through on detail, accountability, and consistent execution.',
-      S: 'A Supporter-heavy team has strong harmony and loyalty but may avoid necessary conflict, resist change, and underutilise individual capabilities.',
-      C: 'An Analyst-heavy team achieves high quality but may over-analyse before acting, struggle with interpersonal warmth, and move slowly under pressure.'
-    };
-    r += `<div class="rec-block-text">Over ${domPct}% share the ${domDisc} (${DISC_NAMES[domDisc]}) style. ${notes[domDisc]} The leadership programme must teach all four DISC types, and supervisors should be trained to actively seek and value different perspectives.</div>
-    <div class="rec-pills"><span class="rec-pill amber">${domDisc} Style Concentration</span><span class="rec-pill">DISC Awareness Module</span><span class="rec-pill">Cross-Style Communication</span></div>`;
-  } else {
-    r += `<div class="rec-block-text">The group shows a healthy DISC distribution (${['D','I','S','C'].map(t=>`${t}:${discCount[t]||0}`).join(' ')}). This diversity is a significant asset - different styles bring complementary strengths to execution, communication, and cohesion. The training priority is helping each person understand their own style and flex when working with others.</div>
-    <div class="rec-pills"><span class="rec-pill good">Healthy DISC Diversity</span><span class="rec-pill good">Strong Collaborative Potential</span><span class="rec-pill">Communication Flex Training</span></div>`;
+  function applyFilter() {
+    const dept = document.getElementById("deptFilter").value;
+    const filtered = dept === "all"
+      ? allResults
+      : allResults.filter(r => r.department === dept);
+    renderTable(filtered);
   }
-  r += `</div>`;
 
-  // Priority 4: LRI skill targeting
-  r += `<div class="rec-block"><div class="rec-block-label">Priority 4 - Targeted Skill Development</div>
-    <div class="rec-block-text">The weakest LRI dimension is <strong style="color:var(--gold2)">${LRI_LABELS[weakest[0]]}</strong> (avg ${weakest[1]}/4) - the single highest-leverage skill to build in the upcoming programme. The strongest dimension is <strong style="color:var(--green)">${LRI_LABELS[strongest[0]]}</strong> (avg ${strongest[1]}/4) - use this as the programme anchor to build confidence and stretch from strength. Recommended module sequence: (1) DISC self-awareness and communication. (2) ${LRI_LABELS[weakest[0]]} targeted skill module. (3) Accountability and ownership behaviours. (4) Influencing without authority. (5) Developing others as a leadership multiplier.</div>
-    <div class="rec-pills">
-      <span class="rec-pill urgent">Focus: ${LRI_LABELS[weakest[0]]} (${weakest[1]}/4)</span>
-      <span class="rec-pill good">Anchor: ${LRI_LABELS[strongest[0]]} (${strongest[1]}/4)</span>
-      <span class="rec-pill">5-Module Design</span>
-    </div>
-  </div>`;
+  // ── RENDER TABLE ──────────────────────────────
+  function renderTable(rows) {
+    if (!rows.length) {
+      document.getElementById("tableContainer").innerHTML = `
+        <div class="state-box">
+          <div class="state-icon">📭</div>
+          <div class="state-msg">No submissions yet.</div>
+        </div>`;
+      return;
+    }
 
-  // Timeline
-  r += `<div class="rec-block-label" style="margin-top:4px">Suggested Action Timeline</div>
-  <div class="timeline">
-    ${crisis?`<div class="tl-card" style="border-color:rgba(224,90,75,.3)"><div class="tl-label" style="color:var(--red)">IMMEDIATE</div><div class="tl-text">Psychologist sessions for the ${hasConcern} flagged participant${hasConcern>1?'s':''}.</div></div>`:''}
-    <div class="tl-card"><div class="tl-label" style="color:var(--gold)">WEEK 1-2</div><div class="tl-text">Share group results with department heads. Design tiered programme.</div></div>
-    <div class="tl-card"><div class="tl-label" style="color:var(--gold)">MONTH 1</div><div class="tl-text">Launch DISC communication + ${LRI_LABELS[weakest[0]]} skill module. Identify peer facilitators.</div></div>
-    <div class="tl-card"><div class="tl-label" style="color:var(--green)">MONTH 3-6</div><div class="tl-text">Full programme delivery. Reassess LRI at close to measure growth.</div></div>
-  </div>
+    // Collect all keys except init flags
+    const exclude = ["init", "note"];
+    const keys = Object.keys(rows[0]).filter(k => !exclude.includes(k));
 
-  <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05);font-size:10px;color:rgba(255,255,255,.2)">Auto-generated from ${n} participant responses. Internal use only. Kytech Scientific Sdn Bhd.</div>
-  </div>`;
+    let html = `<table class="results-table">
+      <thead><tr>
+        <th>#</th>
+        ${keys.map(k => `<th>${formatKey(k)}</th>`).join("")}
+      </tr></thead>
+      <tbody>`;
 
-  return r;
-}
+    rows.forEach((r, i) => {
+      html += `<tr>
+        <td class="mono">${String(i + 1).padStart(2, "0")}</td>
+        ${keys.map(k => `<td>${formatCell(k, r[k])}</td>`).join("")}
+      </tr>`;
+    });
 
-// ════════════════════════════════════════
-// HELPERS
-// ════════════════════════════════════════
-function sectionHead(label) {
-  return `<div class="section-head"><div class="section-head-label">${label}</div><div class="section-head-line"></div></div>`;
-}
+    html += `</tbody></table>`;
+    document.getElementById("tableContainer").innerHTML = html;
+  }
 
-function sc2(label, value, sub, color, accent) {
-  return `<div class="stat-card" style="--accent-color:${accent}">
-    <div class="stat-label">${label}</div>
-    <div class="stat-value" style="color:${color}">${value}</div>
-    <div class="stat-sub">${sub}</div>
-  </div>`;
-}
+  function formatKey(k) {
+    return k.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+  }
 
-function getLabel(val, type) {
-  const t = {
-    D:[{max:9,label:'Normal'},{max:13,label:'Mild'},{max:20,label:'Moderate'},{max:27,label:'Severe'},{max:99,label:'Extremely Severe'}],
-    A:[{max:7,label:'Normal'},{max:9,label:'Mild'},{max:14,label:'Moderate'},{max:19,label:'Severe'},{max:99,label:'Extremely Severe'}],
-    S:[{max:14,label:'Normal'},{max:18,label:'Mild'},{max:25,label:'Moderate'},{max:33,label:'Severe'},{max:99,label:'Extremely Severe'}]
-  };
-  return (t[type].find(x=>val<=x.max)||{label:'?'}).label;
-}
+  function formatCell(key, val) {
+    if (!val && val !== 0) return `<span class="mono">–</span>`;
+    if (key === "department") return `<span class="badge badge-dept">${val}</span>`;
+    if (key === "timestamp")  return `<span class="mono">${val}</span>`;
+    return val;
+  }
 
-function exportCSV() {
-  const data = getFiltered();
-  if (!data.length) { alert('No data to export.'); return; }
-  const headers = ['Name','Department','Role','Tenure','Session','Depression','Anxiety','Stress','Dep Level','Anx Level','Str Level','DISC','LRI %','LRI Category','Self-Awareness','Initiative','Communication','Resilience','Influence','Accountability','Growth Mindset','Dev Others','Timestamp'];
-  const rows = data.map(p => [
-    p.name,p.dept,p.role||'',p.years||'',p.session||'',
-    p.dep,p.anx,p.str,p.depLabel,p.anxLabel,p.strLabel,
-    p.disc,p.lriPercent,p.lriLabel,
-    ...LRI_DIMS.map(k=>(p.lriDimensions&&p.lriDimensions[k])||''),
-    p.timestamp||''
-  ]);
-  const csv = [headers,...rows].map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download = 'inokom_results_'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click();
-}
+  // ── EXPORT CSV ────────────────────────────────
+  function exportCSV() {
+    if (!allResults.length) { alert("No data to export."); return; }
+    const keys = Object.keys(allResults[0]).filter(k => k !== "init" && k !== "note");
+    const csv  = [
+      keys.join(","),
+      ...allResults.map(r => keys.map(k => `"${(r[k] || "").toString().replace(/"/g, '""')}"`).join(","))
+    ].join("\n");
+    const a = document.createElement("a");
+    a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+    a.download = `inokom_results_${new Date().toISOString().split("T")[0]}.csv`;
+    a.click();
+  }
+
+  // ── AUTO REFRESH ──────────────────────────────
+  function startAutoRefresh() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (isLoggedIn) loadResults();
+    }, 30000);
+  }
+
+  function resetTimer() {
+    const bar = document.getElementById("timerBar");
+    bar.style.transition = "none";
+    bar.style.transform  = "scaleX(0)";
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        bar.style.transition = "transform 30s linear";
+        bar.style.transform  = "scaleX(1)";
+      });
+    });
+  }
 </script>
 </body>
 </html>
