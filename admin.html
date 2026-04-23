@@ -516,11 +516,13 @@ tr:hover td { background: rgba(255,255,255,.02); }
 
 <script>
 // ════════════════════════════════════════
-// CONFIG - matches index.html exactly
+// CONFIG - credentials hardcoded to guarantee correct values are used
 // ════════════════════════════════════════
 const ADMIN_PASSWORD = 'Kytech2026';
+const JSONBIN_BIN_ID  = '69e9c9abaaba8821972b48a6';
+const JSONBIN_API_KEY = '$2a$10$EhpB.EcVYfFDFDRdEd/mOeJueFTnKkh5RyfoF0rJnaMCqW6FzuURu';
 
-let BIN_ID = '', API_KEY = '', allData = [], autoTimer = null;
+let BIN_ID = JSONBIN_BIN_ID, API_KEY = JSONBIN_API_KEY, allData = [], autoTimer = null;
 
 const SEV_COLORS = {
   Normal: '#3aad72', Mild: '#e8913a',
@@ -551,14 +553,11 @@ const SEV_ORDER = ['Normal','Mild','Moderate','Severe','Extremely Severe'];
 // AUTH
 // ════════════════════════════════════════
 function doLogin() {
-  const bin  = document.getElementById('cfg-bin').value.trim();
-  const key  = document.getElementById('cfg-key').value.trim();
   const pass = document.getElementById('cfg-pass').value.trim();
   const err  = document.getElementById('login-err');
-  if (pass !== ADMIN_PASSWORD) { err.style.display='block'; return; }
-  if (!bin || !key) { err.style.display='block'; err.textContent='BIN ID / API Key missing.'; return; }
+  if (pass !== ADMIN_PASSWORD) { err.style.display='block'; err.textContent='Incorrect password. Please try again.'; return; }
+  // Credentials are hardcoded - BIN_ID and API_KEY already set as constants
   err.style.display = 'none';
-  BIN_ID = bin; API_KEY = key;
   document.getElementById('login').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   loadData();
@@ -567,7 +566,7 @@ function doLogin() {
 
 function logout() {
   clearInterval(autoTimer);
-  BIN_ID = ''; API_KEY = ''; allData = [];
+  BIN_ID = JSONBIN_BIN_ID; API_KEY = JSONBIN_API_KEY; allData = [];
   document.getElementById('login').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
 }
@@ -583,6 +582,7 @@ async function loadData() {
     const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
       headers: { 'X-Master-Key': API_KEY }
     });
+    if (res.status === 401) throw new Error('401 - API key rejected by JSONBin. The key may have expired. Please regenerate it at jsonbin.io and update the JSONBIN_API_KEY constant in this file.');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
     allData = (json.record && json.record.participants) || [];
