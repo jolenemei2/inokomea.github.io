@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kytech Scientific Sdn Bhd - Health Check</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f5f0;--white:#fff;--ink:#1a1814;--ink2:#3d3a35;--muted:#8a8680;
+  --border:#e2ded8;--border2:#ccc9c2;--gold:#b8922a;--gold2:#d4a840;--gold-bg:#faf6ee;
+  --D:#c84b3b;--D-bg:#fdf1ef;--I:#d4820a;--I-bg:#fef8f0;--S:#2e8b57;--S-bg:#f0f9f4;
+  --C:#2c5f9e;--C-bg:#eff5fc;--dep:#7c4daa;--dep-bg:#f7f2fd;--anx:#c84b3b;--anx-bg:#fdf1ef;
+  --str:#c07a0a;--str-bg:#fef8f0;--radius:12px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
+.screen{display:none}.screen.active{display:block}
+/* COVER */
+#cover{min-height:100vh;background:var(--ink);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:48px 28px;text-align:center}
+.cover-logo{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2);margin-bottom:32px}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(32px,8vw,52px);line-height:1.1;color:#fff;margin-bottom:12px}
+.cover-title em{font-style:italic;color:var(--gold2)}
+.cover-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:40px;line-height:1.7;max-width:320px}
+.cover-pills{display:flex;flex-direction:column;gap:8px;margin-bottom:40px;text-align:left;width:100%;max-width:320px}
+.cover-pill{font-size:13px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:8px}
+.cover-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold2);flex-shrink:0}
+.btn{border:none;border-radius:50px;padding:14px 32px;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn-primary{background:var(--gold);color:#fff;width:100%;max-width:320px;justify-content:center}
+.btn-primary:hover{background:var(--gold2)}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border2);justify-content:center}
+/* PARTICIPANT */
+#participant-screen{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px}
+.p-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;width:100%;max-width:440px;box-shadow:var(--shadow)}
+.p-top{text-align:center;margin-bottom:24px}
+.p-logo{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.p-title{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px}
+.p-sub{font-size:13px;color:var(--muted);line-height:1.6}
+.pfield{margin-bottom:16px}
+.pfield label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.pinput{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);background:var(--bg);outline:none;transition:border .15s;-webkit-appearance:none}
+.pinput:focus{border-color:var(--gold)}
+.perror{display:none;font-size:13px;color:var(--D);padding:10px 14px;background:var(--D-bg);border-radius:6px;margin-bottom:12px}
+/* ASSESS HEADER */
+.assess-header{background:var(--white);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.assess-header-tag{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:12px}
+.progress-wrap{display:flex;align-items:center;gap:8px}
+.progress-track{width:80px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;transition:width .4s}
+.progress-txt{font-size:11px;color:var(--muted);white-space:nowrap}
+/* BODY */
+.assess-body{padding:24px 20px;max-width:600px;margin:0 auto}
+.q-intro{margin-bottom:24px}
+.q-intro-tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.q-intro-title{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px}
+.q-intro-desc{font-size:13px;color:var(--muted);line-height:1.7}
+.scale-guide{display:flex;flex-wrap:wrap;gap:6px 16px;padding:12px 16px;background:var(--gold-bg);border:1px solid #e8d8b0;border-radius:8px;margin-bottom:20px}
+.scale-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)}
+.scale-chip{width:20px;height:20px;border-radius:4px;background:#e8e0d0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.q-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:10px;box-shadow:var(--shadow);transition:border-color .2s}
+.q-card.answered{border-color:#b8d4a0}
+.q-meta{font-size:11px;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.q-subscale{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:10px}
+.q-text{font-size:14px;line-height:1.6;color:var(--ink);margin-bottom:14px}
+.options-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.opt-btn{border:1.5px solid var(--border);background:var(--bg);border-radius:8px;padding:10px 4px;text-align:center;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:3px;-webkit-tap-highlight-color:transparent}
+.opt-btn:active{transform:scale(.97)}
+.opt-btn.active{border-color:var(--gold);background:var(--gold-bg)}
+.opt-num{font-size:16px;font-weight:600;color:var(--gold)}
+.opt-label{font-size:9px;color:var(--muted);line-height:1.2}
+.lead-options{display:flex;flex-direction:column;gap:8px}
+.lead-opt{border:1.5px solid var(--border);background:var(--bg);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;-webkit-tap-highlight-color:transparent}
+.lead-opt:active{transform:scale(.99)}
+.lead-opt.active{border-color:var(--gold);background:var(--gold-bg)}
+.lead-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.lead-opt-text{font-size:13px;line-height:1.5}
+.lri-num{width:22px;height:22px;border-radius:50%;background:var(--gold-bg);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:1px}
+/* FOOTER */
+.assess-footer{background:var(--white);border-top:1px solid var(--border);padding:14px 20px;position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.answered-count{font-size:12px;color:var(--muted)}
+/* TRANSITION */
+.transition-screen{min-height:100vh;background:var(--ink);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:48px 24px}
+.trans-check{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:28px;color:var(--gold2)}
+.trans-title{font-family:'Playfair Display',serif;font-size:28px;color:#fff;margin-bottom:10px}
+.trans-sub{font-size:14px;color:rgba(255,255,255,.5);max-width:340px;line-height:1.8;margin-bottom:32px}
+.trans-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.trans-pill{border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:6px 14px;font-size:12px;color:rgba(255,255,255,.55)}
+/* RESULTS */
+#results-screen{background:var(--bg);min-height:100vh}
+.results-header{background:var(--ink);padding:32px 24px;color:#fff}
+.results-logo{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold2);margin-bottom:14px}
+.results-title{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:6px;font-weight:400}
+.results-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:8px}
+.results-participant{font-size:13px;color:rgba(255,255,255,.7);margin-top:6px}
+.results-body{padding:28px 20px;max-width:680px;margin:0 auto}
+.section-divider{display:flex;align-items:center;gap:12px;margin:28px 0 16px}
+.section-divider-line{flex:1;height:1px;background:var(--border)}
+.section-divider-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.dass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.dass-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;box-shadow:var(--shadow)}
+.dass-card-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.dass-card-score{font-size:36px;font-weight:300;line-height:1;margin-bottom:6px}
+.severity-badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 10px;border-radius:12px}
+.dass-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dass-bar-label{font-size:12px;min-width:90px;color:var(--ink2)}
+.dass-bar-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.dass-bar-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1);width:0}
+.dass-bar-val{font-size:12px;font-weight:500;min-width:28px;text-align:right}
+.interp-box{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}
+.interp-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.interp-icon{font-size:20px}
+.interp-title{font-size:15px;font-weight:500}
+.interp-level{font-size:12px;color:var(--muted)}
+.interp-text{font-size:13px;color:var(--ink2);line-height:1.8}
+.interp-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.interp-tag{font-size:11px;padding:3px 10px;border-radius:12px;background:var(--bg);border:1px solid var(--border);color:var(--ink2)}
+.disc-result{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:12px}
+.disc-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+.disc-badge-large{width:60px;height:60px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff}
+.disc-name{font-family:'Playfair Display',serif;font-size:19px;margin-bottom:3px}
+.disc-tagline{font-size:13px;color:var(--muted);line-height:1.5}
+.disc-bar-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.disc-col{text-align:center}
+.disc-col-track{height:60px;background:var(--bg);border:1px solid var(--border);border-radius:5px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;margin-bottom:6px}
+.disc-col-fill{border-radius:4px 4px 0 0;transition:height 1.2s cubic-bezier(.4,0,.2,1);height:0}
+.disc-col-label{font-size:12px;font-weight:700}
+.disc-col-val{font-size:11px;color:var(--muted)}
+.strength-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.strength-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.strength-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.strength-text{font-size:12px;color:var(--ink2);line-height:1.6}
+.potential-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.potential-score-row{display:flex;align-items:center;gap:20px;margin-bottom:20px}
+.potential-gauge{width:90px;height:90px;flex-shrink:0}
+.potential-gauge svg{width:100%;height:100%}
+.potential-score-num{font-family:'Playfair Display',serif;font-size:36px;line-height:1;margin-bottom:3px}
+.potential-verdict{font-size:16px;font-weight:500;margin-bottom:3px}
+.potential-sub{font-size:12px;color:var(--muted);line-height:1.5}
+.dimension-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.dim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.dim-name{font-size:12px;font-weight:500}
+.dim-score{font-size:11px;color:var(--muted)}
+.dim-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.dim-fill{height:100%;border-radius:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1);width:0}
+.rec-box{background:linear-gradient(135deg,#1a1814 0%,#2d2820 100%);border-radius:var(--radius);padding:22px;color:#fff;margin-top:12px}
+.rec-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold2);margin-bottom:6px;font-weight:600}
+.rec-text{font-size:13px;color:rgba(255,255,255,.7);line-height:1.8}
+.rec-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.rec-tag{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6)}
+/* SUBMIT BANNER */
+.submit-banner{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-top:16px;box-shadow:var(--shadow);text-align:center}
+.submit-banner.success{background:#f0f9f4;border-color:#b8d4a0}
+.submit-banner.error{background:var(--D-bg);border-color:var(--D)}
+.submit-icon{font-size:28px;margin-bottom:8px}
+.submit-msg{font-size:14px;font-weight:500;margin-bottom:4px}
+.submit-sub{font-size:12px;color:var(--muted)}
+.restart-btn{display:flex;justify-content:center;margin:24px 0}
+/* Loading spinner */
+#loading-screen{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--bg)}
+.spinner{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:380px){
+  .options-row{grid-template-columns:repeat(2,1fr)}
+  .dass-grid{grid-template-columns:1fr}
+  .strength-grid,.dimension-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ CONFIG - ADMIN SETS THIS ═══ -->
+<script>
+// !! ADMIN: Paste your JSONBin BIN ID and API KEY here after setup !!
+const JSONBIN_BIN_ID = '69e9c9abaaba8821972b48a6';
+const JSONBIN_API_KEY = '$2a$10$EhpB.EcVYfFDFDRdEd/mOeJueFTnKkh5RyfoF0rJnaMCqW6FzuURu';
+const SESSION_CODE = 'INOKOM2025'; // Change this each session
+</script>
+
+<!-- COVER -->
+<div id="cover" class="screen active">
+  <div class="cover-logo">Kytech Scientific Sdn Bhd</div>
+  <h1 class="cover-title">Organisational<br><em>Health Check</em></h1>
+  <p class="cover-sub">A two-part assessment to understand your wellbeing and identify your leadership potential.</p>
+  <div class="cover-pills">
+    <div class="cover-pill">Conducted by Certified Psychologist and Training Consultant</div>
+    <div class="cover-pill">Fully confidential - individual results stay private</div>
+    <div class="cover-pill">Takes about 15 minutes to complete</div>
+    <div class="cover-pill">HRD Corp Claimable Programme</div>
+  </div>
+  <button class="btn btn-primary" onclick="showScreen('participant-screen')">Begin Assessment</button>
+</div>
+
+<!-- PARTICIPANT INFO -->
+<div id="participant-screen" class="screen">
+  <div class="p-card">
+    <div class="p-top">
+      <div class="p-logo">Kytech Scientific Sdn Bhd</div>
+      <h2 class="p-title">Before we begin</h2>
+      <p class="p-sub">Please enter your details. These are confidential and used only for the group gap analysis report.</p>
+    </div>
+    <div class="pfield">
+      <label>Full Name <span style="color:var(--D)">*</span></label>
+      <input class="pinput" id="p-name" type="text" placeholder="e.g. Ahmad bin Ismail">
+    </div>
+    <div class="pfield">
+      <label>Department <span style="color:var(--D)">*</span></label>
+      <input class="pinput" id="p-dept" type="text" placeholder="e.g. Production, Quality, HR">
+    </div>
+    <div class="pfield">
+      <label>Role / Job Title</label>
+      <input class="pinput" id="p-role" type="text" placeholder="e.g. Line Leader, Supervisor, Operator">
+    </div>
+    <div class="pfield">
+      <label>Years with Inokom</label>
+      <select class="pinput" id="p-years">
+        <option value="">Select tenure</option>
+        <option>Less than 1 year</option>
+        <option>1 to 3 years</option>
+        <option>3 to 5 years</option>
+        <option>5 to 10 years</option>
+        <option>More than 10 years</option>
+      </select>
+    </div>
+    <div class="perror" id="p-error">Please enter your name and department to continue.</div>
+    <button class="btn btn-primary" onclick="submitParticipant()">Continue to Assessment</button>
+  </div>
+</div>
+
+<!-- DASS-21 -->
+<div id="dass-screen" class="screen">
+  <div class="assess-header">
+    <div class="assess-header-tag" style="background:var(--dep-bg);color:var(--dep)">Part 1: Wellbeing</div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="dass-progress" style="background:var(--dep)"></div></div>
+      <div class="progress-txt" id="dass-counter">0/21</div>
+    </div>
+  </div>
+  <div class="assess-body">
+    <div class="q-intro">
+      <div class="q-intro-tag">Part 1 of 2</div>
+      <div class="q-intro-title">How have you been feeling?</div>
+      <div class="q-intro-desc">Please read each statement and select how much it applied to you over the past week. There are no right or wrong answers.</div>
+    </div>
+    <div class="scale-guide">
+      <div class="scale-item"><div class="scale-chip" style="background:#f0ede8">0</div>Not at all</div>
+      <div class="scale-item"><div class="scale-chip" style="background:#e0d8c8">1</div>Sometimes</div>
+      <div class="scale-item"><div class="scale-chip" style="background:#d0c8b0">2</div>Often</div>
+      <div class="scale-item"><div class="scale-chip" style="background:#c0b898">3</div>Most of the time</div>
+    </div>
+    <div id="dass-questions"></div>
+  </div>
+  <div class="assess-footer">
+    <div class="answered-count" id="dass-answered">0 of 21 answered</div>
+    <button class="btn btn-primary" onclick="submitDASS()" style="padding:11px 22px;font-size:13px">Next: Leadership</button>
+  </div>
+</div>
+
+<!-- TRANSITION -->
+<div id="transition-screen" class="screen">
+  <div class="transition-screen">
+    <div class="trans-check">✓</div>
+    <h2 class="trans-title">Part 1 Complete</h2>
+    <p class="trans-sub">Thank you. Now for Part 2 - this section helps identify your natural strengths and leadership potential.</p>
+    <div class="trans-pills">
+      <div class="trans-pill">28 questions</div>
+      <div class="trans-pill">8 to 10 minutes</div>
+      <div class="trans-pill">No right or wrong answers</div>
+    </div>
+    <button class="btn btn-primary" onclick="startPart(2)">Begin Part 2</button>
+  </div>
+</div>
+
+<!-- LEADERSHIP -->
+<div id="lead-screen" class="screen">
+  <div class="assess-header">
+    <div class="assess-header-tag" style="background:var(--gold-bg);color:var(--gold)">Part 2: Leadership</div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="lead-progress" style="background:var(--gold)"></div></div>
+      <div class="progress-txt" id="lead-counter">0/28</div>
+    </div>
+  </div>
+  <div class="assess-body">
+    <div class="q-intro">
+      <div class="q-intro-tag">Part 2 of 2</div>
+      <div class="q-intro-title">How do you naturally behave at work?</div>
+      <div class="q-intro-desc">Choose the option that best describes what you naturally tend to do, not what you think you should do.</div>
+    </div>
+    <div id="lead-questions"></div>
+  </div>
+  <div class="assess-footer">
+    <div class="answered-count" id="lead-answered">0 of 28 answered</div>
+    <button class="btn btn-primary" onclick="submitLead()" style="padding:11px 22px;font-size:13px">View My Results</button>
+  </div>
+</div>
+
+
+
+<!-- RESULTS -->
+<div id="results-screen" class="screen">
+  <div class="results-header">
+    <div class="results-logo">Kytech Scientific Sdn Bhd · Personal Report</div>
+    <h2 class="results-title">Your Health Check Report</h2>
+    <div class="results-sub">Confidential · Inokom Sdn Bhd · <span id="result-date"></span></div>
+    <div class="results-participant" id="results-participant"></div>
+  </div>
+  <div class="results-body" id="results-body-inner">
+    <div style="text-align:center;padding:60px 20px">
+      <div class="spinner" style="margin:0 auto 16px"></div>
+      <p style="font-size:14px;color:var(--muted)">Preparing your report...</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+const DASS_QUESTIONS = [
+  { id:1,  text:"I found it hard to wind down.", subscale:"S", sub:"Stress" },
+  { id:2,  text:"I was aware of dryness of my mouth.", subscale:"A", sub:"Anxiety" },
+  { id:3,  text:"I couldn't seem to experience any positive feeling at all.", subscale:"D", sub:"Depression" },
+  { id:4,  text:"I experienced breathing difficulty (e.g., breathlessness without physical exertion).", subscale:"A", sub:"Anxiety" },
+  { id:5,  text:"I found it difficult to work up the initiative to do things.", subscale:"D", sub:"Depression" },
+  { id:6,  text:"I tended to over-react to situations.", subscale:"S", sub:"Stress" },
+  { id:7,  text:"I experienced trembling (e.g., in the hands).", subscale:"A", sub:"Anxiety" },
+  { id:8,  text:"I felt that I was using a lot of nervous energy.", subscale:"S", sub:"Stress" },
+  { id:9,  text:"I was worried about situations in which I might panic and make a fool of myself.", subscale:"A", sub:"Anxiety" },
+  { id:10, text:"I felt that I had nothing to look forward to.", subscale:"D", sub:"Depression" },
+  { id:11, text:"I found myself getting agitated.", subscale:"S", sub:"Stress" },
+  { id:12, text:"I found it difficult to relax.", subscale:"S", sub:"Stress" },
+  { id:13, text:"I felt down-hearted and blue.", subscale:"D", sub:"Depression" },
+  { id:14, text:"I was intolerant of anything that kept me from getting on with what I was doing.", subscale:"S", sub:"Stress" },
+  { id:15, text:"I felt I was close to panic.", subscale:"A", sub:"Anxiety" },
+  { id:16, text:"I was unable to become enthusiastic about anything.", subscale:"D", sub:"Depression" },
+  { id:17, text:"I felt I wasn't worth much as a person.", subscale:"D", sub:"Depression" },
+  { id:18, text:"I felt that I was rather touchy.", subscale:"S", sub:"Stress" },
+  { id:19, text:"I was aware of the action of my heart without physical exertion (e.g., heart racing).", subscale:"A", sub:"Anxiety" },
+  { id:20, text:"I felt scared without any good reason.", subscale:"A", sub:"Anxiety" },
+  { id:21, text:"I felt that life was meaningless.", subscale:"D", sub:"Depression" },
+];
+const DASS_THRESHOLDS = {
+  D:[{max:9,label:"Normal",color:"#2e8b57",bg:"#f0f9f4"},{max:13,label:"Mild",color:"#d4820a",bg:"#fef8f0"},{max:20,label:"Moderate",color:"#e05a4b",bg:"#fdf1ef"},{max:27,label:"Severe",color:"#c0392b",bg:"#fdf1ef"},{max:99,label:"Extremely Severe",color:"#8e1010",bg:"#fdf1ef"}],
+  A:[{max:7,label:"Normal",color:"#2e8b57",bg:"#f0f9f4"},{max:9,label:"Mild",color:"#d4820a",bg:"#fef8f0"},{max:14,label:"Moderate",color:"#e05a4b",bg:"#fdf1ef"},{max:19,label:"Severe",color:"#c0392b",bg:"#fdf1ef"},{max:99,label:"Extremely Severe",color:"#8e1010",bg:"#fdf1ef"}],
+  S:[{max:14,label:"Normal",color:"#2e8b57",bg:"#f0f9f4"},{max:18,label:"Mild",color:"#d4820a",bg:"#fef8f0"},{max:25,label:"Moderate",color:"#e05a4b",bg:"#fdf1ef"},{max:33,label:"Severe",color:"#c0392b",bg:"#fdf1ef"},{max:99,label:"Extremely Severe",color:"#8e1010",bg:"#fdf1ef"}],
+};
+const LEAD_QUESTIONS = [
+  {id:1,type:"disc",text:"Your team faces an unexpected problem mid-shift. What do you do first?",options:[{letter:"D",text:"Take charge immediately - assign tasks and push to fix it fast."},{letter:"I",text:"Rally the team, keep the mood positive, and brainstorm together."},{letter:"S",text:"Stay calm, follow the established procedure, and avoid disruption."},{letter:"C",text:"Investigate the root cause thoroughly before acting."}]},
+  {id:2,type:"disc",text:"A new work procedure is introduced that changes how you do your daily tasks. Your reaction:",options:[{letter:"D",text:"I challenge whether it's truly better, then push for quick implementation if it is."},{letter:"I",text:"I get excited about the change and try to get others on board."},{letter:"S",text:"I prefer time to understand it fully before switching over."},{letter:"C",text:"I review the new procedure in detail to ensure I understand it correctly."}]},
+  {id:3,type:"disc",text:"When your supervisor gives you a task without a detailed explanation, you:",options:[{letter:"D",text:"Get started right away - I'll figure it out as I go."},{letter:"I",text:"Talk to teammates to gather ideas and then jump in enthusiastically."},{letter:"S",text:"Ask for clarification before I begin so I don't make mistakes."},{letter:"C",text:"Ask for the full details, steps, and expected quality standard."}]},
+  {id:4,type:"disc",text:"There is a quality defect or error found in your work area. Your first instinct:",options:[{letter:"D",text:"Fix it immediately and let the responsible person know directly."},{letter:"I",text:"Bring it up with the team so everyone is aware and learns from it."},{letter:"S",text:"Follow the standard reporting procedure without causing alarm."},{letter:"C",text:"Document it carefully and trace it back to the exact cause."}]},
+  {id:5,type:"disc",text:"You are asked to train a new colleague on your job. You approach this by:",options:[{letter:"D",text:"Show them once, set a clear target, and let them try it themselves."},{letter:"I",text:"Make it engaging - I enjoy explaining, encouraging, and building their confidence."},{letter:"S",text:"Walk them through step by step patiently until they are comfortable."},{letter:"C",text:"Ensure they understand every detail, standard, and the reason behind each step."}]},
+  {id:6,type:"disc",text:"Your team is running behind the daily target. How do you respond?",options:[{letter:"D",text:"Push harder - I take the lead and drive the team to close the gap."},{letter:"I",text:"Encourage the team, remind them we can do it, and keep energy high."},{letter:"S",text:"Stay steady, work at a consistent pace, and support whoever needs help."},{letter:"C",text:"Identify where the bottleneck is so we can fix the process, not just rush."}]},
+  {id:7,type:"disc",text:"A colleague makes a mistake that affects your work. You:",options:[{letter:"D",text:"Speak to them directly and clearly - I point out the issue right away."},{letter:"I",text:"Approach them in a friendly way and work through it together."},{letter:"S",text:"Stay calm and avoid confrontation - I find a quiet way to resolve it."},{letter:"C",text:"Check the facts first, then raise it with specific evidence."}]},
+  {id:8,type:"disc",text:"In a team meeting, you are most likely to:",options:[{letter:"D",text:"Drive the agenda and push for decisions to be made."},{letter:"I",text:"Keep the energy high and make sure everyone contributes."},{letter:"S",text:"Listen carefully and only speak when I'm sure of what I want to say."},{letter:"C",text:"Take notes and ask detailed questions to ensure clarity."}]},
+  {id:9,type:"disc",text:"When your supervisor asks for feedback on a new work process, you:",options:[{letter:"D",text:"Give a direct and honest opinion - I say what needs improving, clearly."},{letter:"I",text:"Share my view positively and suggest improvements enthusiastically."},{letter:"S",text:"Give gentle feedback - I don't want to create conflict or upset anyone."},{letter:"C",text:"Present my analysis with specific observations to back it up."}]},
+  {id:10,type:"disc",text:"When two teammates disagree and come to you, you tend to:",options:[{letter:"D",text:"Make a quick call and tell them which approach makes more sense."},{letter:"I",text:"Help both sides feel heard and guide them toward agreement."},{letter:"S",text:"Stay neutral, avoid taking sides, and restore harmony."},{letter:"C",text:"Listen to both sides then help them weigh the facts objectively."}]},
+  {id:11,type:"disc",text:"Describe how you prefer to work day-to-day:",options:[{letter:"D",text:"Fast-paced with clear targets - I thrive under pressure."},{letter:"I",text:"Varied tasks with lots of interaction with people."},{letter:"S",text:"A steady, predictable routine where I know what is expected."},{letter:"C",text:"A structured environment with clear standards and quality checks."}]},
+  {id:12,type:"disc",text:"At the end of a long and tough shift or workday, you feel most satisfied when:",options:[{letter:"D",text:"I hit or exceeded the target."},{letter:"I",text:"The team had a good experience and morale was high."},{letter:"S",text:"Everything ran smoothly without conflict or disruption."},{letter:"C",text:"The work was done correctly and to the right standard."}]},
+  {id:13,type:"disc",text:"When facing a safety rule or SOP you think is unnecessary, you:",options:[{letter:"D",text:"Question it openly and push for a review if I think it wastes time."},{letter:"I",text:"Follow it but share my thoughts informally with teammates."},{letter:"S",text:"Follow it without question - rules exist for a reason."},{letter:"C",text:"Study the reasoning behind it before deciding whether to raise a concern."}]},
+  {id:14,type:"disc",text:"How do you typically respond to repetitive, routine tasks?",options:[{letter:"D",text:"I find them boring and look for ways to do them faster or improve them."},{letter:"I",text:"I find ways to make them social - I prefer working alongside others."},{letter:"S",text:"I don't mind - routine tasks give me a sense of consistency and control."},{letter:"C",text:"I appreciate routine - it allows me to achieve consistent quality."}]},
+  {id:15,type:"disc",text:"You are given a tight deadline with limited resources. You:",options:[{letter:"D",text:"Prioritise ruthlessly, take charge, and push through."},{letter:"I",text:"Rally the team's energy and tackle it together with enthusiasm."},{letter:"S",text:"Stay calm, work steadily, and avoid panic - one step at a time."},{letter:"C",text:"Quickly assess what can realistically be done well within the time."}]},
+  {id:16,type:"disc",text:"Your teammates would most likely describe you as:",options:[{letter:"D",text:"Driven, direct, and results-focused."},{letter:"I",text:"Enthusiastic, friendly, and energising."},{letter:"S",text:"Reliable, calm, and always there when needed."},{letter:"C",text:"Careful, precise, and thorough."}]},
+  {id:17,type:"disc",text:"When you receive praise from your supervisor, you feel most motivated by:",options:[{letter:"D",text:"Being recognised for achieving great results."},{letter:"I",text:"Being told you made a positive impact on the team."},{letter:"S",text:"Being acknowledged as dependable and trustworthy."},{letter:"C",text:"Being appreciated for the quality and accuracy of your work."}]},
+  {id:18,type:"disc",text:"When you are under stress, people around you would notice you:",options:[{letter:"D",text:"Becoming sharper, more impatient, and more demanding."},{letter:"I",text:"Talking more, seeking reassurance, or becoming emotional."},{letter:"S",text:"Withdrawing quietly and becoming reluctant to act."},{letter:"C",text:"Becoming more critical, cautious, and slow to decide."}]},
+  {id:19,type:"disc",text:"What is your biggest frustration when working with others?",options:[{letter:"D",text:"People who are slow, indecisive, or resistant to getting things done."},{letter:"I",text:"People who are overly negative, cold, or dismissive of the team."},{letter:"S",text:"People who create conflict or constantly change plans without reason."},{letter:"C",text:"People who rush and cut corners without checking quality."}]},
+  {id:20,type:"disc",text:"If you had to choose, what is your most natural strength at work?",options:[{letter:"D",text:"Getting things done and pushing through obstacles to hit targets."},{letter:"I",text:"Motivating, engaging, and connecting people."},{letter:"S",text:"Being the person people rely on - steady, loyal, and supportive."},{letter:"C",text:"Ensuring work is accurate, compliant, and done to the right standard."}]},
+  {id:21,type:"lri",dimension:"self-awareness",text:"I understand how my mood and behaviour affects my teammates and the atmosphere around me.",options:[{value:1,text:"Rarely. I focus on my own tasks, not how others feel."},{value:2,text:"Sometimes, when someone points it out to me."},{value:3,text:"Often. I check in with myself and try to manage my impact."},{value:4,text:"Almost always. I actively monitor my emotional impact on the team."}]},
+  {id:22,type:"lri",dimension:"initiative",text:"When I notice a problem or safety risk that no one else has spotted, I:",options:[{value:1,text:"Wait for my supervisor to notice and handle it."},{value:2,text:"Mention it to my supervisor and leave it for them to deal with."},{value:3,text:"Report it and suggest a possible solution."},{value:4,text:"Take immediate steps to address it myself or lead the resolution."}]},
+  {id:23,type:"lri",dimension:"communication",text:"I feel confident sharing my ideas or concerns with people above me in the organisation.",options:[{value:1,text:"Not at all. It makes me very uncomfortable."},{value:2,text:"I can do it but feel nervous and avoid it when possible."},{value:3,text:"Mostly confident when I'm well-prepared."},{value:4,text:"Very confident. I actively raise concerns and ideas to management."}]},
+  {id:24,type:"lri",dimension:"resilience",text:"After a setback or failure at work (e.g., missed target, rejected work), I:",options:[{value:1,text:"Struggle to recover and it affects my mood for a long time."},{value:2,text:"Take a while, but I eventually get back to normal."},{value:3,text:"Reflect briefly, learn from it, and refocus fairly quickly."},{value:4,text:"Bounce back fast, adapt my approach, and help others do the same."}]},
+  {id:25,type:"lri",dimension:"influence",text:"When I believe in an idea or a better way of doing something at work, I can usually get others to support it.",options:[{value:1,text:"Rarely. I don't feel confident enough to persuade others."},{value:2,text:"Sometimes, if they already agree with me."},{value:3,text:"Often. I know how to explain and make a convincing case."},{value:4,text:"Almost always. Influencing others toward better outcomes is a natural strength."}]},
+  {id:26,type:"lri",dimension:"accountability",text:"When something goes wrong on my team or shift, I:",options:[{value:1,text:"Hope someone else takes responsibility and sorts it out."},{value:2,text:"Acknowledge my part privately but avoid saying so openly."},{value:3,text:"Take ownership of my contribution and work to fix it."},{value:4,text:"Take full ownership and lead the team through the recovery, regardless of who caused it."}]},
+  {id:27,type:"lri",dimension:"growth-mindset",text:"I actively look for ways to improve my own skills and performance at work.",options:[{value:1,text:"Rarely. I focus on just getting my current tasks done."},{value:2,text:"Occasionally, when training is offered to me."},{value:3,text:"Regularly. I seek feedback and learn from mistakes."},{value:4,text:"Consistently. I proactively seek training, feedback, and new challenges."}]},
+  {id:28,type:"lri",dimension:"team-development",text:"When I see a colleague struggling with a task or skill I know well, I:",options:[{value:1,text:"Focus on my own work - it's not my responsibility."},{value:2,text:"Report it to my supervisor and let them handle it."},{value:3,text:"Offer informal help and share what I know when I can."},{value:4,text:"Proactively coach them and invest time in their development."}]},
+];
+const DISC_PROFILES = {
+  D:{name:"The Driver",tagline:"Results-focused, decisive, and direct. Natural authority figures who thrive under pressure and take ownership fast.",strengths:["Moves quickly through obstacles","Sets clear direction and goals","Takes ownership without hesitation","High drive for results and output"],growth:["May overpower quieter team members","Can skip collaborative planning","May appear impatient or aggressive under stress"],leadershipFit:"Strong potential for supervisory and team leadership roles. Most effective when coached on empathy, active listening, and inclusive decision-making."},
+  I:{name:"The Influencer",tagline:"People-centred, inspiring, and energetic. Natural motivators who build strong team culture and drive engagement.",strengths:["Builds morale and enthusiasm","Exceptional communicator and persuader","Brings people together","Drives creativity and positive change"],growth:["May avoid difficult conversations","Can lose focus on procedural detail","Enthusiasm may mask poor planning"],leadershipFit:"Excellent for roles requiring team motivation, change management, and people development. Needs coaching on following through on detail and holding others accountable."},
+  S:{name:"The Supporter",tagline:"Dependable, patient, and team-first. The backbone of any high-functioning team - consistent under pressure.",strengths:["Highly reliable and consistent","Creates psychological safety for others","Excellent listener and conflict mediator","Loyal through difficult periods"],growth:["May avoid conflict even when necessary","Can resist urgent or necessary change","Tends to underestimate own leadership capability"],leadershipFit:"Outstanding for supervisory roles requiring team cohesion and trust. High potential with coaching on assertiveness, speaking up, and faster decision-making."},
+  C:{name:"The Analyst",tagline:"Precise, systematic, and quality-driven. Natural process improvers who ensure accuracy and compliance.",strengths:["Unmatched attention to detail","Ensures accuracy and compliance","Strong critical and analytical thinker","Excellent at diagnosing root causes"],growth:["Can become paralysed by perfectionism","May struggle with interpersonal warmth","Tends to over-analyse before acting"],leadershipFit:"Strong in technical and quality leadership. Needs development in influencing, storytelling, and building team motivation beyond task compliance."},
+};
+const LRI_DIMENSIONS = {"self-awareness":"Self-Awareness","initiative":"Initiative & Proactivity","communication":"Communication Confidence","resilience":"Resilience","influence":"Influence & Persuasion","accountability":"Accountability","growth-mindset":"Growth Mindset","team-development":"Developing Others"};
+
+// STATE
+let dassAnswers={}, leadAnswers={};
+let participantName='', participantDept='', participantRole='', participantYears='';
+
+// NAVIGATION
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(id);
+  el.classList.add('active');
+  el.classList.add('fade-in');
+  window.scrollTo({top:0,left:0,behavior:'instant'});
+  document.documentElement.scrollTop=0;
+  document.body.scrollTop=0;
+  el.scrollIntoView({block:'start',behavior:'instant'});
+}
+
+function submitParticipant(){
+  const name=document.getElementById('p-name').value.trim();
+  const dept=document.getElementById('p-dept').value.trim();
+  const err=document.getElementById('p-error');
+  if(!name||!dept){err.style.display='block';return;}
+  err.style.display='none';
+  participantName=name; participantDept=dept;
+  participantRole=document.getElementById('p-role').value.trim();
+  participantYears=document.getElementById('p-years').value;
+  startPart(1);
+}
+
+function startPart(part){
+  if(part===1){renderDASS();showScreen('dass-screen');}
+  else{renderLead();showScreen('lead-screen');}
+}
+
+// DASS
+function renderDASS(){
+  const c=document.getElementById('dass-questions');
+  const sbColors={D:'var(--dep)',A:'var(--anx)',S:'var(--str)'};
+  const sbBgs={D:'var(--dep-bg)',A:'var(--anx-bg)',S:'var(--str-bg)'};
+  c.innerHTML=DASS_QUESTIONS.map(q=>`
+    <div class="q-card" id="dc-${q.id}">
+      <div class="q-meta"><span>Q${q.id} of 21</span><span class="q-subscale" style="background:${sbBgs[q.subscale]};color:${sbColors[q.subscale]}">${q.sub}</span></div>
+      <div class="q-text">${q.text}</div>
+      <div class="options-row">${[0,1,2,3].map(v=>`<div class="opt-btn" id="do-${q.id}-${v}" onclick="selDASS(${q.id},${v})"><div class="opt-num">${v}</div><div class="opt-label">${['Never','Sometimes','Often','Always'][v]}</div></div>`).join('')}</div>
+    </div>`).join('');
+}
+function selDASS(qId,val){
+  dassAnswers[qId]=val;
+  [0,1,2,3].forEach(v=>document.getElementById(`do-${qId}-${v}`).classList.toggle('active',v===val));
+  document.getElementById(`dc-${qId}`).classList.add('answered');
+  const n=Object.keys(dassAnswers).length;
+  document.getElementById('dass-progress').style.width=(n/21*100)+'%';
+  document.getElementById('dass-counter').textContent=n+'/21';
+  document.getElementById('dass-answered').textContent=n+' of 21 answered';
+}
+function submitDASS(){
+  if(Object.keys(dassAnswers).length<21){
+    const f=DASS_QUESTIONS.find(q=>dassAnswers[q.id]===undefined);
+    if(f){document.getElementById(`dc-${f.id}`).scrollIntoView({behavior:'smooth',block:'center'});document.getElementById(`dc-${f.id}`).style.borderColor='#e05a4b';setTimeout(()=>document.getElementById(`dc-${f.id}`).style.borderColor='',2000);}
+    return;
+  }
+  showScreen('transition-screen');
+}
+
+// LEADERSHIP
+function renderLead(){
+  const c=document.getElementById('lead-questions');
+  c.innerHTML=LEAD_QUESTIONS.map(q=>{
+    const isDisc=q.type==='disc';
+    const tag=isDisc?`<span class="q-subscale" style="background:var(--gold-bg);color:var(--gold)">DISC</span>`:`<span class="q-subscale" style="background:var(--dep-bg);color:var(--dep)">Leadership</span>`;
+    const opts=q.options.map((opt,i)=>{
+      if(isDisc) return `<div class="lead-opt" id="lo-${q.id}-${i}" onclick="selLead(${q.id},${i},'${opt.letter}')"><div class="lead-opt-text">${opt.text}</div></div>`;
+      return `<div class="lead-opt" id="lo-${q.id}-${i}" onclick="selLead(${q.id},${i},${opt.value})"><div class="lead-opt-text">${opt.text}</div></div>`;
+    }).join('');
+    return `<div class="q-card" id="lc-${q.id}"><div class="q-meta"><span>Q${q.id} of 28</span>${tag}</div><div class="q-text">${q.text}</div><div class="lead-options">${opts}</div></div>`;
+  }).join('');
+}
+function selLead(qId,optIdx,val){
+  leadAnswers[qId]=val;
+  const q=LEAD_QUESTIONS.find(q=>q.id===qId);
+  q.options.forEach((_,i)=>document.getElementById(`lo-${qId}-${i}`).classList.toggle('active',i===optIdx));
+  document.getElementById(`lc-${qId}`).classList.add('answered');
+  const n=Object.keys(leadAnswers).length;
+  document.getElementById('lead-progress').style.width=(n/28*100)+'%';
+  document.getElementById('lead-counter').textContent=n+'/28';
+  document.getElementById('lead-answered').textContent=n+' of 28 answered';
+}
+function submitLead(){
+  if(Object.keys(leadAnswers).length<28){
+    const f=LEAD_QUESTIONS.find(q=>leadAnswers[q.id]===undefined);
+    if(f){document.getElementById(`lc-${f.id}`).scrollIntoView({behavior:'smooth',block:'center'});document.getElementById(`lc-${f.id}`).style.borderColor='#e05a4b';setTimeout(()=>document.getElementById(`lc-${f.id}`).style.borderColor='',2000);}
+    return;
+  }
+  showScreen('results-screen');
+  document.getElementById('results-body-inner').innerHTML='<div style="text-align:center;padding:80px 20px"><div class="spinner" style="margin:0 auto 16px"></div><p style="font-size:14px;color:var(--muted)">Analysing your results...</p></div>';
+  setTimeout(buildResults,800);
+}
+
+// RESULTS
+function buildResults(){
+  const inner=document.getElementById('results-body-inner');
+  if(inner) inner.innerHTML=`
+    <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Part 1: Emotional Wellbeing (DASS-21)</div><div class="section-divider-line"></div></div>
+    <div class="dass-grid" id="dass-result-grid"></div>
+    <div id="dep-bar-row" class="dass-bar-row"></div>
+    <div id="anx-bar-row" class="dass-bar-row"></div>
+    <div id="str-bar-row" class="dass-bar-row"></div>
+    <div class="interp-box" id="dass-interpretation"></div>
+    <div class="interp-box" id="perf-link" style="margin-top:10px;border-left:3px solid var(--gold)"></div>
+    <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Part 2: Leadership Potential Profile</div><div class="section-divider-line"></div></div>
+    <div class="disc-result" id="disc-result-card"></div>
+    <div class="potential-card" id="leadership-readiness" style="margin-top:12px"></div>
+    <div class="rec-box" id="final-rec"></div>
+    <div id="submit-banner" class="submit-banner" style="margin-top:16px">
+      <div class="submit-icon">☁</div>
+      <div class="submit-msg">Submitting your results...</div>
+      <div class="submit-sub">Please wait a moment.</div>
+    </div>
+    <div class="restart-btn">
+      <button class="btn btn-outline" onclick="restartAll()">Start New Assessment</button>
+    </div>
+  `;
+  const depItems=[3,5,10,13,16,17,21], anxItems=[2,4,7,9,15,19,20], strItems=[1,6,8,11,12,14,18];
+  const rawDep=depItems.reduce((s,i)=>s+(dassAnswers[i]||0),0)*2;
+  const rawAnx=anxItems.reduce((s,i)=>s+(dassAnswers[i]||0),0)*2;
+  const rawStr=strItems.reduce((s,i)=>s+(dassAnswers[i]||0),0)*2;
+  const getSev=(score,type)=>DASS_THRESHOLDS[type].find(t=>score<=t.max);
+  const depSev=getSev(rawDep,'D'), anxSev=getSev(rawAnx,'A'), strSev=getSev(rawStr,'S');
+  const discCounts={D:0,I:0,S:0,C:0};
+  LEAD_QUESTIONS.filter(q=>q.type==='disc').forEach(q=>{if(leadAnswers[q.id])discCounts[leadAnswers[q.id]]++;});
+  const discMax=Math.max(...Object.values(discCounts));
+  const primaryDisc=Object.keys(discCounts).find(k=>discCounts[k]===discMax)||'S';
+  const lriDimensions={};
+  LEAD_QUESTIONS.filter(q=>q.type==='lri').forEach(q=>{lriDimensions[q.dimension]=(leadAnswers[q.id]||1);});
+  const lriTotal=Object.values(lriDimensions).reduce((s,v)=>s+v,0);
+  const lriPercent=Math.round(lriTotal/32*100);
+  const lriLabel=lriPercent>=80?'High Potential Leader':lriPercent>=60?'Emerging Leader':lriPercent>=40?'Developing Potential':'Foundation Building';
+  const lriColor=lriPercent>=80?'#2e8b57':lriPercent>=60?'#d4820a':lriPercent>=40?'#2c5f9e':'#8a8680';
+  const discColors={D:'#c84b3b',I:'#d4820a',S:'#2e8b57',C:'#2c5f9e'};
+
+  document.getElementById('result-date').textContent=new Date().toLocaleDateString('en-MY',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('results-participant').innerHTML=[participantName,participantDept,participantRole,participantYears].filter(Boolean).map(v=>`<span style="margin-right:14px">${v}</span>`).join('');
+
+  // DASS grid
+  document.getElementById('dass-result-grid').innerHTML=[{label:'Depression',score:rawDep,sev:depSev,color:'var(--dep)'},{label:'Anxiety',score:rawAnx,sev:anxSev,color:'var(--anx)'},{label:'Stress',score:rawStr,sev:strSev,color:'var(--str)'}].map(d=>`<div class="dass-card"><div class="dass-card-label" style="color:${d.color}">${d.label}</div><div class="dass-card-score" style="color:${d.color}">${d.score}</div><div class="severity-badge" style="background:${d.sev.bg};color:${d.sev.color}">${d.sev.label}</div></div>`).join('');
+
+  [{id:'dep-bar-row',label:'Depression',score:rawDep,color:'var(--dep)'},{id:'anx-bar-row',label:'Anxiety',score:rawAnx,color:'var(--anx)'},{id:'str-bar-row',label:'Stress',score:rawStr,color:'var(--str)'}].forEach(b=>{
+    document.getElementById(b.id).innerHTML=`<div class="dass-bar-label">${b.label}</div><div class="dass-bar-track"><div class="dass-bar-fill" data-target="${Math.min(b.score/42*100,100).toFixed(1)}" style="background:${b.color}"></div></div><div class="dass-bar-val">${b.score}/42</div>`;
+  });
+
+  const sevs=[depSev.label,anxSev.label,strSev.label];
+  const hasConcern=sevs.some(s=>['Moderate','Severe','Extremely Severe'].includes(s));
+  const allNormal=sevs.every(s=>s==='Normal');
+  document.getElementById('dass-interpretation').innerHTML=allNormal
+    ?`<div class="interp-header"><div class="interp-icon">✅</div><div><div class="interp-title">Positive Wellbeing State</div><div class="interp-level">All subscales within normal range</div></div></div><div class="interp-text">Your emotional wellbeing scores are all within the normal range. You are managing the demands of your work and personal life effectively at this time.</div><div class="interp-tags"><span class="interp-tag">Emotionally stable</span><span class="interp-tag">Performance-ready</span></div>`
+    :hasConcern
+    ?`<div class="interp-header"><div class="interp-icon">🔴</div><div><div class="interp-title">Elevated Emotional Distress Detected</div><div class="interp-level">One or more subscales at moderate-to-severe level</div></div></div><div class="interp-text">Your scores indicate a meaningful level of psychological distress in one or more areas. The psychologist will discuss this confidentially with you.</div><div class="interp-tags"><span class="interp-tag">Confidential follow-up available</span><span class="interp-tag">Actionable through programme intervention</span></div>`
+    :`<div class="interp-header"><div class="interp-icon">🟡</div><div><div class="interp-title">Mild Emotional Load Detected</div><div class="interp-level">One or more subscales in mild range</div></div></div><div class="interp-text">Your scores suggest some mild emotional strain. This is very common in busy work environments. If left unaddressed, mild stress can gradually erode focus and communication quality.</div><div class="interp-tags"><span class="interp-tag">Monitor over time</span><span class="interp-tag">Self-care recommended</span></div>`;
+
+  document.getElementById('perf-link').innerHTML=`<div class="interp-header" style="margin-bottom:8px"><div class="interp-icon">⚡</div><div><div class="interp-title" style="font-size:14px">Wellbeing and Workplace Performance</div></div></div><div class="interp-text">${allNormal?'Strong emotional baseline gives you the foundation to take on greater responsibility. The priority now is developing leadership skills and communication confidence.':hasConcern?'Elevated distress is directly associated with reduced cognitive performance, increased errors, and weakened communication. This is addressable through structured wellbeing and leadership programmes.':'Mild emotional load at scale is one of the most underestimated drivers of team performance loss. Early intervention through self-care and resilience training prevents escalation.'}</div>`;
+
+  const profile=DISC_PROFILES[primaryDisc];
+  document.getElementById('disc-result-card').innerHTML=`
+    <div class="disc-top"><div class="disc-badge-large" style="background:${discColors[primaryDisc]}">${primaryDisc}</div><div><div class="disc-name">${primaryDisc}: ${profile.name}</div><div class="disc-tagline">${profile.tagline}</div></div></div>
+    <div class="disc-bar-cols">${['D','I','S','C'].map(t=>`<div class="disc-col"><div class="disc-col-track"><div class="disc-col-fill" data-target="${(discCounts[t]/20*100).toFixed(1)}%" style="background:${discColors[t]}"></div></div><div class="disc-col-label" style="color:${discColors[t]}">${t}</div><div class="disc-col-val">${discCounts[t]}/20</div></div>`).join('')}</div>
+    <div class="strength-grid"><div class="strength-item"><div class="strength-label">Key Strengths</div><div class="strength-text">${profile.strengths.map(s=>'• '+s).join('<br>')}</div></div><div class="strength-item"><div class="strength-label">Growth Areas</div><div class="strength-text">${profile.growth.map(s=>'• '+s).join('<br>')}</div></div><div class="strength-item" style="grid-column:1/-1"><div class="strength-label">Leadership Fit</div><div class="strength-text">${profile.leadershipFit}</div></div></div>`;
+
+  const gc=2*Math.PI*40, gd=(lriPercent/100)*gc;
+  document.getElementById('leadership-readiness').innerHTML=`
+    <div style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Leadership Readiness Index</div>
+    <div class="potential-score-row">
+      <svg class="potential-gauge" width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--border)" stroke-width="8"/><circle cx="50" cy="50" r="40" fill="none" stroke="${lriColor}" stroke-width="8" stroke-dasharray="${gd.toFixed(1)} ${gc.toFixed(1)}" stroke-dashoffset="${(gc/4).toFixed(1)}" stroke-linecap="round"/><text x="50" y="54" text-anchor="middle" font-size="18" font-weight="600" fill="${lriColor}" font-family="Inter,sans-serif">${lriPercent}%</text></svg>
+      <div><div class="potential-verdict" style="color:${lriColor}">${lriLabel}</div><div class="potential-sub">Score: ${lriTotal}/32 across 8 leadership dimensions</div></div>
+    </div>
+    <div class="dimension-grid">${Object.entries(lriDimensions).map(([dim,score])=>`<div><div class="dim-header"><div class="dim-name">${LRI_DIMENSIONS[dim]}</div><div class="dim-score">${score}/4</div></div><div class="dim-track"><div class="dim-fill" data-target="${(score/4*100)}%" style="background:var(--dep)"></div></div></div>`).join('')}</div>`;
+
+  document.getElementById('final-rec').innerHTML=`<div class="rec-title">Kytech Development Recommendation</div><div class="rec-text">Based on your DISC profile (${primaryDisc}: ${profile.name}) and Leadership Readiness Index score of ${lriPercent}%, ${lriPercent>=70?'you demonstrate strong leadership potential. With structured development through the AMPLIFY or ZEEP programme, this potential can be channelled into measurable leadership capability.':lriPercent>=50?'you show genuine emerging leadership potential ready to be developed. A structured programme would directly address the specific dimensions where you scored lower.':'your foundation-building stage is entirely normal. A structured programme would accelerate your readiness significantly within 3 to 6 months.'}</div><div class="rec-tags"><span class="rec-tag">${primaryDisc}: ${profile.name}</span><span class="rec-tag">${lriLabel}</span><span class="rec-tag">${allNormal?'Strong Wellbeing Foundation':'Wellbeing Support Recommended'}</span></div>`;
+
+  showScreen('results-screen');
+  setTimeout(()=>{
+    document.querySelectorAll('.dass-bar-fill[data-target]').forEach(el=>{el.style.width=el.dataset.target+'%';});
+    document.querySelectorAll('.disc-col-fill[data-target]').forEach(el=>{el.style.height=el.dataset.target;});
+    document.querySelectorAll('.dim-fill[data-target]').forEach(el=>{el.style.width=el.dataset.target;});
+  },100);
+
+  // Submit to JSONBin
+  submitToCloud({
+    name:participantName, dept:participantDept, role:participantRole, years:participantYears,
+    session:SESSION_CODE,
+    dep:rawDep, anx:rawAnx, str:rawStr,
+    depLabel:depSev.label, anxLabel:anxSev.label, strLabel:strSev.label,
+    disc:primaryDisc, discCounts:{...discCounts},
+    lriTotal, lriPercent, lriLabel,
+    lriDimensions:{...lriDimensions},
+    timestamp:new Date().toISOString()
+  });
+}
+
+async function submitToCloud(data){
+  const banner=document.getElementById('submit-banner');
+  if(JSONBIN_BIN_ID==='__NEVER_MATCHES__'){
+    banner.className='submit-banner success';
+    banner.innerHTML='<div class="submit-icon">⚙️</div><div class="submit-msg">Setup required</div><div class="submit-sub">Admin needs to configure the JSONBin ID and API key. See setup guide.</div>';
+    return;
+  }
+  try{
+    // Read current data first
+    const readRes=await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`,{headers:{'X-Master-Key':JSONBIN_API_KEY}});
+    const readJson=await readRes.json();
+    const existing=(readJson.record&&readJson.record.participants)||[];
+    existing.push(data);
+    // Write back
+    await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_API_KEY},
+      body:JSON.stringify({participants:existing})
+    });
+    banner.className='submit-banner success';
+    banner.innerHTML='<div class="submit-icon">✅</div><div class="submit-msg">Results submitted successfully</div><div class="submit-sub">Your data has been sent to the admin dashboard. Thank you!</div>';
+  }catch(e){
+    banner.className='submit-banner error';
+    banner.innerHTML='<div class="submit-icon">❌</div><div class="submit-msg">Could not connect to dashboard</div><div class="submit-sub">Please tell the session admin. Your individual results above are still saved.</div>';
+  }
+}
+
+function restartAll(){
+  dassAnswers={}; leadAnswers={};
+  participantName=''; participantDept=''; participantRole=''; participantYears='';
+  document.getElementById('p-name').value='';
+  document.getElementById('p-dept').value='';
+  document.getElementById('p-role').value='';
+  document.getElementById('p-years').value='';
+  showScreen('cover');
+}
+</script>
+</body>
+</html>
